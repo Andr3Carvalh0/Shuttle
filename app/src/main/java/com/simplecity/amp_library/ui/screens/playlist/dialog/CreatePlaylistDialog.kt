@@ -27,7 +27,6 @@ import com.simplecity.amp_library.model.Query
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.sql.SqlUtils
 import com.simplecity.amp_library.sql.sqlbrite.SqlBriteUtils
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
 import dagger.android.support.AndroidSupportInjection
@@ -76,9 +75,7 @@ class CreatePlaylistDialog : DialogFragment() {
                         editText.setSelection(name.length)
                     }
                 },
-                { error ->
-                    LogUtils.logException(TAG, "PlaylistManager: Error Setting playlist name", error)
-                }
+                { }
             ))
 
         val builder = MaterialDialog.Builder(context!!)
@@ -126,13 +123,7 @@ class CreatePlaylistDialog : DialogFragment() {
                                     }
                                 }
                             },
-                            { error ->
-                                LogUtils.logException(
-                                    TAG,
-                                    "PlaylistManager: Error Saving playlist",
-                                    error
-                                )
-                            }
+                            { }
                         )
                 }
             }
@@ -164,13 +155,7 @@ class CreatePlaylistDialog : DialogFragment() {
                                     dialog.getActionButton(DialogAction.POSITIVE).setText(R.string.create_playlist_create_text)
                                 }
                             },
-                            { error ->
-                                LogUtils.logException(
-                                    TAG,
-                                    "PlaylistManager: Error handling text change",
-                                    error
-                                )
-                            }
+                            { }
                         ))
                 }
             }

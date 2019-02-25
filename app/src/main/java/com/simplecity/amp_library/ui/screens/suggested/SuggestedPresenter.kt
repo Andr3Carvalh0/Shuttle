@@ -10,7 +10,6 @@ import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuPresenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
 import com.simplecity.amp_library.ui.screens.suggested.SuggestedContract.View
 import com.simplecity.amp_library.utils.ComparisonUtils
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.extensions.getSongsSingle
 import com.simplecity.amp_library.utils.menu.album.AlbumsMenuCallbacks
@@ -113,7 +112,7 @@ class SuggestedPresenter @Inject constructor(
                 })
                 .subscribe(
                     { suggestedData -> view?.setData(suggestedData) },
-                    { error -> LogUtils.logException(TAG, "Failed to load data", error) }
+                    { }
                 )
         )
     }
@@ -125,7 +124,7 @@ class SuggestedPresenter @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { items -> dst(items) },
-                    { error -> LogUtils.logException(SongMenuPresenter.TAG, "Failed to transform src single", error) }
+                    { }
                 )
         )
     }

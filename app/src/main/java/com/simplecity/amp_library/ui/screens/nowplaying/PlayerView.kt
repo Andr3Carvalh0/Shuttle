@@ -27,6 +27,4 @@ interface PlayerView : SongMenuContract.View {
     fun trackInfoChanged(song: Song?)
 
     fun showLyricsDialog()
-
-    fun showUpgradeDialog()
 }

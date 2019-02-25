@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import com.simplecity.amp_library.R;
-import com.simplecity.amp_library.utils.LogUtils;
 
 public class NotificationHelper {
 
@@ -40,7 +39,6 @@ public class NotificationHelper {
         try {
             notificationManager.notify(notificationId, notification);
         }  catch (RuntimeException e) {
-            LogUtils.logException(TAG, "Error posting notification", e);
         }
     }
 

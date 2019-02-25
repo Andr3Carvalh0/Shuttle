@@ -11,7 +11,6 @@ import com.simplecity.amp_library.ui.screens.playlist.menu.PlaylistMenuPresenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
 import com.simplecity.amp_library.utils.ComparisonUtils
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.PermissionUtils
 import com.simplecity.amp_library.utils.sorting.SortManager
@@ -92,9 +91,7 @@ class PlaylistDetailPresenter @AssistedInject constructor(
                     .subscribe({ songs ->
                         this.songs = songs
                         view?.setData(songs)
-                    }, { error ->
-                        LogUtils.logException(TAG, "loadData error", error);
-                    })
+                    }, { })
             )
         }
     }
@@ -125,9 +122,7 @@ class PlaylistDetailPresenter @AssistedInject constructor(
                     view?.fadeInSlideShowAlbum(currentSlideShowAlbum, newAlbum)
                     currentSlideShowAlbum = newAlbum
                 }
-            }, { error ->
-                LogUtils.logException(TAG, "startSlideShow threw error", error)
-            })
+            }, { })
         )
     }
 

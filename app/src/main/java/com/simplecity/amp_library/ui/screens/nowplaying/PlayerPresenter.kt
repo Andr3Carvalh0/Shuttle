@@ -10,7 +10,6 @@ import com.simplecity.amp_library.playback.PlaybackMonitor
 import com.simplecity.amp_library.playback.constants.InternalIntents
 import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import com.simplecity.amp_library.utils.menu.song.SongsMenuCallbacks
@@ -57,7 +56,7 @@ class PlayerPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { progress -> view.setSeekProgress((progress!! * 1000).toInt()) },
-                    { error -> LogUtils.logException(TAG, "PlayerPresenter: Error updating seek progress", error) })
+                    { })
         )
 
         addDisposable(
@@ -66,7 +65,7 @@ class PlayerPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { pos -> refreshTimeText(pos!! / 1000) },
-                    { error -> LogUtils.logException(TAG, "PlayerPresenter: Error refreshing time text", error) })
+                    { })
         )
 
         addDisposable(
@@ -75,7 +74,7 @@ class PlayerPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { setCurrentTimeVisibility(mediaManager.isPlaying || !currentPlaybackTimeVisible) },
-                    { error -> LogUtils.logException(TAG, "PlayerPresenter: Error emitting current time", error) })
+                    { })
         )
 
         val filter = IntentFilter()
@@ -112,7 +111,7 @@ class PlayerPresenter @Inject constructor(
                             }
                         }
                     },
-                    { error -> LogUtils.logException(TAG, "PlayerPresenter: Error sending broadcast", error) }
+                    { }
                 )
         )
     }
@@ -156,7 +155,7 @@ class PlayerPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { isFavorite -> updateFavorite(isFavorite) },
-                { error -> LogUtils.logException(TAG, "updateTrackInfo error", error) }
+                { }
             )
 
         addDisposable(isFavoriteDisposable!!)
@@ -266,11 +265,7 @@ class PlayerPresenter @Inject constructor(
     }
 
     fun editTagsClicked(activity: Activity) {
-        if (!ShuttleUtils.isUpgraded(activity.applicationContext as ShuttleApplication, settingsManager)) {
-            view?.showUpgradeDialog()
-        } else {
-            view?.presentTagEditorDialog(mediaManager.song!!)
-        }
+        view?.presentTagEditorDialog(mediaManager.song!!)
     }
 
     fun songInfoClicked() {

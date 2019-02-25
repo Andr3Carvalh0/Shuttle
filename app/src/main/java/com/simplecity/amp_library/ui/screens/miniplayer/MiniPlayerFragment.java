@@ -22,7 +22,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.model.Song;
 import com.simplecity.amp_library.ui.common.BaseFragment;
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog;
 import com.simplecity.amp_library.ui.screens.nowplaying.PlayerPresenter;
 import com.simplecity.amp_library.ui.views.PlayPauseView;
 import com.simplecity.amp_library.ui.views.PlayerViewAdapter;
@@ -240,11 +239,6 @@ public class MiniPlayerFragment extends BaseFragment {
                     .into(miniArtwork);
 
             rootView.setContentDescription(getString(R.string.btn_now_playing, song.name, song.artistName));
-        }
-
-        @Override
-        public void showUpgradeDialog() {
-            UpgradeDialog.Companion.newInstance().show(getChildFragmentManager());
         }
     };
 }

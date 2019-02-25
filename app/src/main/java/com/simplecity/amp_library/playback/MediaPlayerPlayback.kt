@@ -12,7 +12,6 @@ import android.os.PowerManager
 import android.text.TextUtils
 import android.util.Log
 import com.simplecity.amp_library.model.Song
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -129,7 +128,6 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
                 }
                 mediaPlayer.prepareAsync()
             } catch (e: Exception) {
-                LogUtils.logException(TAG, "setDataSourceImpl failed. Path: [$path]", e)
                 completion(false)
             }
 
@@ -161,11 +159,9 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
                     try {
                         currentMediaPlayer?.setNextMediaPlayer(nextMediaPlayer)
                     } catch (e: Exception) {
-                        LogUtils.logException(TAG, "setNextDataSource failed - failed to call setNextMediaPlayer on currentMediaPlayer", e)
                         releaseNextMediaPlayer()
                     }
                 } else {
-                    LogUtils.logException(TAG, "setDataSourceImpl failed for path: [$path]. Setting next media player to null", null)
                     releaseNextMediaPlayer()
                 }
             }
@@ -185,9 +181,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
 
             try {
                 currentMediaPlayer?.start()
-            } catch (e: RuntimeException) {
-                LogUtils.logException(TAG, "start() failed", e)
-            }
+            } catch (e: RuntimeException) { }
 
             callbacks?.onPlayStateChanged(this)
         }
@@ -199,9 +193,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
             if (isInitialized) {
                 try {
                     currentMediaPlayer?.reset()
-                } catch (e: IllegalStateException) {
-                    LogUtils.logException(TAG, "stop() failed", e)
-                }
+                } catch (e: IllegalStateException) { }
 
                 isInitialized = false
             }

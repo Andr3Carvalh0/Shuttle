@@ -11,7 +11,6 @@ import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay.NavigationEvent
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay.NavigationEvent.Type
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.extensions.getSongs
 import com.simplecity.amp_library.utils.extensions.getSongsSingle
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
@@ -93,7 +92,7 @@ class AlbumMenuPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { albumArtist -> navigationEventRelay.sendEvent(NavigationEvent(Type.GO_TO_ARTIST, albumArtist, true)) },
-                { error -> LogUtils.logException(com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter.TAG, "Failed to retrieve album artist", error) }
+                { }
             ))
     }
 
@@ -103,8 +102,7 @@ class AlbumMenuPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { items -> dst(items) },
-                    { error -> LogUtils.logException(SongMenuPresenter.TAG, "Failed to transform src single", error) }
+                    { items -> dst(items) }, { }
                 )
         )
     }
@@ -116,7 +114,7 @@ class AlbumMenuPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     onSuccess,
-                    { error -> LogUtils.logException(TAG, "Failed to retrieve songs", error) }
+                    { }
                 )
         )
     }

@@ -10,7 +10,6 @@ import com.simplecity.amp_library.data.SongsRepository
 import com.simplecity.amp_library.model.Playlist
 import com.simplecity.amp_library.model.Playlist.Type
 import com.simplecity.amp_library.model.Song
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -67,7 +66,7 @@ class FavoritesPlaylistManager @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { },
-                { throwable -> LogUtils.logException(TAG, "clearFavorites error", throwable) }
+                { }
             )
     }
 
@@ -91,7 +90,7 @@ class FavoritesPlaylistManager @Inject constructor(
                         }
                     }
                 },
-                { error -> LogUtils.logException(TAG, "PlaylistManager: Error toggling favorites", error) }
+                { }
             )
     }
 
@@ -116,7 +115,7 @@ class FavoritesPlaylistManager @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ success.invoke(it) },
-                { throwable -> LogUtils.logException(TAG, "Error adding to playlist", throwable) }
+                { }
             )
     }
 
@@ -126,7 +125,7 @@ class FavoritesPlaylistManager @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { playlist -> playlist?.let { playlistManager.removeFromPlaylist(it, song, callback) } },
-                { error -> LogUtils.logException(TAG, "PlaylistManager: Error Removing from favorites", error) }
+                { }
             )
     }
 

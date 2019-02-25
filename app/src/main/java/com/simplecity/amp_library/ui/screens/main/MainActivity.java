@@ -31,8 +31,6 @@ import com.simplecity.amp_library.ui.common.ToolbarListener;
 import com.simplecity.amp_library.ui.dialog.ChangelogDialog;
 import com.simplecity.amp_library.ui.screens.drawer.DrawerProvider;
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay;
-import com.simplecity.amp_library.utils.AnalyticsManager;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.MusicServiceConnectionUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ThemeUtils;
@@ -74,17 +72,12 @@ public class MainActivity extends BaseActivity implements
     Repository.SongsRepository songsRepository;
 
     @Inject
-    AnalyticsManager analyticsManager;
-
-    @Inject
     SettingsManager settingsManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
-        analyticsManager.dropBreadcrumb(TAG, "onCreate()");
 
         // If we haven't set any defaults, do that now
         if (Aesthetic.isFirstTime(this)) {
@@ -99,7 +92,6 @@ public class MainActivity extends BaseActivity implements
                     .colorStatusBarAuto()
                     .apply();
 
-            analyticsManager.logInitialTheme(theme);
         }
 
         setContentView(R.layout.activity_main);
@@ -130,16 +122,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        analyticsManager.dropBreadcrumb(TAG, "onCreate()");
-
         showChangelogDialog();
     }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         super.onServiceConnected(name, service);
-        analyticsManager.dropBreadcrumb(TAG, "onServiceConnected()");
-
         handlePendingPlaybackRequest();
     }
 
@@ -153,15 +141,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-
-        analyticsManager.dropBreadcrumb(TAG, "onPause()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        analyticsManager.dropBreadcrumb(TAG, "onDestroy()");
     }
 
     private void handleIntent(Intent intent) {
@@ -190,7 +174,7 @@ public class MainActivity extends BaseActivity implements
                 .subscribe(
                         aBoolean -> {
                         },
-                        throwable -> LogUtils.logException(TAG, "handleIntent error", throwable)
+                        throwable -> {}
                 );
     }
 
@@ -234,7 +218,7 @@ public class MainActivity extends BaseActivity implements
                                     // Make sure to process intent only once
                                     setIntent(new Intent());
                                 },
-                                error -> LogUtils.logException(TAG, "Error handling playback request", error)
+                                error -> {}
                         );
             }
         }

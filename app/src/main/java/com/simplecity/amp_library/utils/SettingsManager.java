@@ -56,9 +56,6 @@ public class SettingsManager extends BaseSettingsManager {
     // Playback
     public static String KEY_PREF_REMEMBER_SHUFFLE = "pref_remember_shuffle";
 
-    // Upgrade
-    public static String KEY_PREF_UPGRADE = "pref_upgrade";
-
     // Whether the 'rate' snackbar has been seen during this session
     public boolean hasSeenRateSnackbar = false;
 
@@ -455,10 +452,6 @@ public class SettingsManager extends BaseSettingsManager {
 
     // Legacy Upgrade Preference
     private static final String KEY_UPGRADED = "pref_theme_gold";
-
-    public boolean getIsLegacyUpgraded() {
-        return getBool(KEY_UPGRADED, false);
-    }
 
     // Recently added
 

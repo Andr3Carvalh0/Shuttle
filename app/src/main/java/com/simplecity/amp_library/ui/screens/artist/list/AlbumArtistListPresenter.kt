@@ -7,7 +7,6 @@ import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.album.menu.AlbumArtistMenuContract
 import com.simplecity.amp_library.ui.screens.album.menu.AlbumArtistMenuPresenter
 import com.simplecity.amp_library.ui.screens.artist.list.AlbumArtistListContract.View
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.sorting.SortManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -52,7 +51,7 @@ class AlbumArtistListPresenter @Inject constructor(
                     this.albumArtists - albumArtists
                     view?.setData(albumArtists)
                 },
-                { error -> LogUtils.logException(TAG, "refreshAdapterItems error", error) }
+                { }
             ))
     }
 

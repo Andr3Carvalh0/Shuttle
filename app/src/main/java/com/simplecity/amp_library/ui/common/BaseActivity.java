@@ -16,31 +16,21 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
 import com.afollestad.aesthetic.AestheticActivity;
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.Purchase;
 import com.greysonparrelli.permiso.Permiso;
-import com.simplecity.amp_library.R;
-import com.simplecity.amp_library.ShuttleApplication;
-import com.simplecity.amp_library.billing.BillingManager;
-import com.simplecity.amp_library.constants.Config;
 import com.simplecity.amp_library.playback.constants.InternalIntents;
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog;
-import com.simplecity.amp_library.utils.AnalyticsManager;
 import com.simplecity.amp_library.utils.MusicServiceConnectionUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import java.util.List;
 import javax.inject.Inject;
 
 import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 
 public abstract class BaseActivity extends AestheticActivity implements
         HasSupportFragmentInjector,
-        ServiceConnection,
-        BillingManager.BillingUpdatesListener {
+        ServiceConnection {
 
     @Nullable
     private MusicServiceConnectionUtils.ServiceToken token;
@@ -49,13 +39,7 @@ public abstract class BaseActivity extends AestheticActivity implements
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
     @Inject
-    BillingManager billingManager;
-
-    @Inject
     SettingsManager settingsManager;
-
-    @Inject
-    AnalyticsManager analyticsManager;
 
     @CallSuper
     protected void onCreate(final Bundle savedInstanceState) {
@@ -94,10 +78,6 @@ public abstract class BaseActivity extends AestheticActivity implements
         }
 
         Permiso.getInstance().setActivity(this);
-
-        if (billingManager.getBillingClientResponseCode() == BillingClient.BillingResponse.OK) {
-            billingManager.queryPurchases();
-        }
     }
 
     @Override
@@ -109,9 +89,6 @@ public abstract class BaseActivity extends AestheticActivity implements
     @Override
     protected void onDestroy() {
         unbindService();
-
-        billingManager.destroy();
-
         super.onDestroy();
     }
 
@@ -120,29 +97,8 @@ public abstract class BaseActivity extends AestheticActivity implements
         return fragmentInjector;
     }
 
-    @Override
-    public void onPurchasesUpdated(List<Purchase> purchases) {
-        for (Purchase purchase : purchases) {
-            if (purchase.getSku().equals(Config.SKU_PREMIUM)) {
-                ((ShuttleApplication) getApplicationContext()).setIsUpgraded(true);
-            }
-        }
-    }
-
-    @Override
-    public void onPremiumPurchaseCompleted() {
-        ((ShuttleApplication) getApplicationContext()).setIsUpgraded(true);
-        new UpgradeDialog().show(getSupportFragmentManager());
-    }
-
-    @Override
-    public void onPremiumPurchaseRestored() {
-        ((ShuttleApplication) getApplicationContext()).setIsUpgraded(true);
-        Toast.makeText(BaseActivity.this, R.string.iab_purchase_restored, Toast.LENGTH_SHORT).show();
-    }
-
     void bindService() {
-        MusicServiceConnectionUtils.bindToService(getLifecycle(), this, analyticsManager, this, serviceToken -> token = serviceToken);
+        MusicServiceConnectionUtils.bindToService(getLifecycle(), this, this, serviceToken -> token = serviceToken);
     }
 
     void unbindService() {

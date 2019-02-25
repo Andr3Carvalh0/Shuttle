@@ -8,12 +8,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import com.simplecity.amp_library.playback.constants.ExternalIntents
-import com.simplecity.amp_library.utils.AnalyticsManager
 import com.simplecity.amp_library.utils.SettingsManager
 
 class BluetoothManager(
     private val playbackManager: PlaybackManager,
-    private val analyticsManager: AnalyticsManager,
     private val musicServiceCallbacks: MusicService.Callbacks,
     private val settingsManager: SettingsManager
 ) {
@@ -40,7 +38,6 @@ class BluetoothManager(
                                 val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                                 val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                                 if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                                    analyticsManager.dropBreadcrumb(TAG, "ACTION_AUDIO_STATE_CHANGED.. pausing. State: $state")
                                     playbackManager.pause(false)
                                 }
                             }
@@ -48,7 +45,6 @@ class BluetoothManager(
                                 val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                                 val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                                 if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                                    analyticsManager.dropBreadcrumb(TAG, "ACTION_AUDIO_STATE_CHANGED.. pausing. State: $state")
                                     playbackManager.pause(false)
                                 }
                             }

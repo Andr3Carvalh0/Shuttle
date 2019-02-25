@@ -16,8 +16,6 @@ import com.simplecity.amp_library.data.Repository
 import com.simplecity.amp_library.model.InclExclItem
 import com.simplecity.amp_library.ui.modelviews.EmptyView
 import com.simplecity.amp_library.ui.modelviews.InclExclView
-import com.simplecity.amp_library.utils.AnalyticsManager
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecityapps.recycler_adapter.adapter.ViewModelAdapter
 import com.simplecityapps.recycler_adapter.model.ViewModel
 import dagger.android.support.AndroidSupportInjection
@@ -30,7 +28,6 @@ class InclExclDialog : DialogFragment() {
     @Inject lateinit var songsRepository: Repository.SongsRepository
     @Inject lateinit var blacklistRepository: Repository.BlacklistRepository
     @Inject lateinit var whitelistRepository: Repository.WhitelistRepository
-    @Inject lateinit var analyticsManager: AnalyticsManager
 
     @InclExclItem.Type
     var type: Int = 0
@@ -115,16 +112,13 @@ class InclExclDialog : DialogFragment() {
                 { inclExclViews ->
                     when {
                         inclExclViews.isEmpty() -> {
-                            analyticsManager.dropBreadcrumb(TAG, "getDialog setData (empty)")
                             inclExclAdapter.setItems(listOf<ViewModel<*>>(EmptyView(if (type == InclExclItem.Type.INCLUDE) R.string.whitelist_empty else R.string.blacklist_empty)))
                         }
                         else -> {
-                            analyticsManager.dropBreadcrumb(TAG, "getDialog setData")
                             inclExclAdapter.setItems(inclExclViews)
                         }
                     }
-                },
-                { error -> LogUtils.logException(TAG, "Error setting incl/excl items", error) })
+                }, {})
 
         return dialog
     }

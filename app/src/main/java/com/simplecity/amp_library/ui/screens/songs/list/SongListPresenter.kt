@@ -7,7 +7,6 @@ import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.songs.list.SongListContract.View
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.sorting.SortManager
 import javax.inject.Inject
@@ -49,9 +48,7 @@ class SongListPresenter @Inject constructor(
             .subscribe({ songs ->
                 this.songs = songs
                 view?.setData(songs, scrollToTop)
-            }, { error ->
-                LogUtils.logException(TAG, "Failed to load songs", error)
-            })
+            }, { })
         )
     }
 

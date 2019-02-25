@@ -6,7 +6,6 @@ import com.simplecity.amp_library.ui.screens.genre.list.GenreListContract.View
 import com.simplecity.amp_library.ui.screens.genre.menu.GenreMenuContract
 import com.simplecity.amp_library.ui.screens.genre.menu.GenreMenuPresenter
 import com.simplecity.amp_library.utils.ComparisonUtils
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class GenreListPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { genres -> view?.setData(genres) },
-                { error -> LogUtils.logException(TAG, "Error refreshing adapter items", error) }
+                { }
             ))
     }
 

@@ -13,7 +13,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.simplecity.amp_library.BuildConfig;
 import com.simplecity.amp_library.R;
-import com.simplecity.amp_library.utils.AnalyticsManager;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,10 +118,10 @@ public class SnowfallView extends View {
         super.onDetachedFromWindow();
     }
 
-    public void letItSnow(AnalyticsManager analyticsManager) {
+    public void letItSnow() {
         if (snowflakes.isEmpty()) {
             if (lerp(0f, 1f, snowRng.nextFloat()) <= LUCKY) {
-                fetchSnowConfig(analyticsManager);
+                fetchSnowConfig();
             }
         }
     }
@@ -136,7 +136,7 @@ public class SnowfallView extends View {
         invalidate();
     }
 
-    private void fetchSnowConfig(AnalyticsManager analyticsManager) {
+    private void fetchSnowConfig() {
         if (isInEditMode()) {
             return;
         }
@@ -146,7 +146,6 @@ public class SnowfallView extends View {
                 if (remoteConfig.getBoolean(LET_IT_SNOW)) {
                     snowHandler.removeCallbacksAndMessages(null);
                     snowHandler.postDelayed(this::generateSnow, SNOWFALL_DELAY);
-                    analyticsManager.didSnow();
                 }
             }
         });

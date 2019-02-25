@@ -12,7 +12,6 @@ import com.simplecity.amp_library.playback.MediaManager
 import com.simplecity.amp_library.playback.constants.InternalIntents
 import com.simplecity.amp_library.sql.SqlUtils
 import com.simplecity.amp_library.ui.common.Presenter
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import org.jaudiotagger.audio.AudioFileIO
@@ -41,8 +40,8 @@ constructor(
             RxBroadcast.fromBroadcast(application, IntentFilter(InternalIntents.META_CHANGED))
                 .toFlowable(BackpressureStrategy.LATEST)
                 .subscribe(
-                    { _ -> updateLyrics(application) },
-                    { error -> LogUtils.logException(TAG, "Error receiving meta changed", error) }
+                    { updateLyrics(application) },
+                    { }
                 )
         )
     }
@@ -127,7 +126,7 @@ constructor(
                             lyricsView.showQuickLyricInfoButton(!QuickLyricUtils.isQLInstalled(context))
                         }
                     },
-                    { error -> LogUtils.logException(TAG, "Error getting lyrics", error) })
+                    { })
         )
     }
 

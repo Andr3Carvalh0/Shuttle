@@ -17,14 +17,12 @@ import com.afollestad.aesthetic.Util
 import com.bumptech.glide.RequestManager
 import com.simplecity.amp_library.R
 import com.simplecity.amp_library.ShuttleApplication
-import com.simplecity.amp_library.billing.BillingManager
 import com.simplecity.amp_library.model.Playlist
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.playback.MediaManager.Defs
 import com.simplecity.amp_library.ui.common.BaseFragment
 import com.simplecity.amp_library.ui.dialog.DeleteDialog
 import com.simplecity.amp_library.ui.dialog.SongInfoDialog
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog
 import com.simplecity.amp_library.ui.modelviews.SelectableViewModel
 import com.simplecity.amp_library.ui.modelviews.SubheaderView
 import com.simplecity.amp_library.ui.screens.nowplaying.PlayerPresenter
@@ -79,9 +77,6 @@ class QueueFragment :
 
     @Inject
     lateinit var queuePresenter: QueuePresenter
-
-    @Inject
-    lateinit var billingManager: BillingManager
 
     @Inject
     lateinit var settingsManager: SettingsManager
@@ -227,10 +222,6 @@ class QueueFragment :
                 }
             }
         }
-
-        override fun showUpgradeDialog() {
-            UpgradeDialog().show(childFragmentManager)
-        }
     }
 
     private var toolbarListener = Toolbar.OnMenuItemClickListener { item ->
@@ -374,9 +365,6 @@ class QueueFragment :
         }
     }
 
-    override fun showUpgradeDialog() {
-        UpgradeDialog().show(childFragmentManager)
-    }
 
     override fun setQueueSwipeLocked(locked: Boolean) {
         itemTouchHelperCallback.setEnabled(!locked)

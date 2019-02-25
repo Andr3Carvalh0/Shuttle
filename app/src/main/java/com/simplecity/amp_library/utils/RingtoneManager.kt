@@ -86,7 +86,7 @@ class RingtoneManager @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { message -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show() },
-                { error -> LogUtils.logException(TAG, "Error setting ringtone", error) }
+                { }
             )
     }
 

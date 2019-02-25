@@ -27,7 +27,6 @@ import com.simplecity.amp_library.playback.MediaManager;
 import com.simplecity.amp_library.saf.SafManager;
 import com.simplecity.amp_library.sql.providers.PlayCountTable;
 import com.simplecity.amp_library.utils.CustomMediaScanner;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.extensions.AlbumExtKt;
 import com.simplecity.amp_library.utils.extensions.SongExtKt;
@@ -272,7 +271,6 @@ public class DeleteDialog extends DialogFragment implements SafManager.SafDialog
                         if (DeleteDialog.this.isAdded()) {
                             SafManager.SafDialog.show(DeleteDialog.this);
                         } else {
-                            LogUtils.logException(TAG, "Failed to delete songs.. Couldn't show SAFDialog", null);
                             Toast.makeText(getContext(), getString(R.string.delete_songs_failure_toast), Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -289,13 +287,12 @@ public class DeleteDialog extends DialogFragment implements SafManager.SafDialog
                                         dismiss();
                                     }
                                 }, error -> {
-                                    LogUtils.logException(TAG, "Failed to delete songs", error);
                                     if (DeleteDialog.this.isAdded()) {
                                         Toast.makeText(getContext(), getString(R.string.delete_songs_failure_toast), Toast.LENGTH_SHORT).show();
                                     }
                                 }));
                     }
-                }, error -> LogUtils.logException(TAG, "Failed to delete songs", error)));
+                }, error -> {} ));
     }
 
     @SuppressLint("CheckResult")
@@ -361,7 +358,7 @@ public class DeleteDialog extends DialogFragment implements SafManager.SafDialog
                             Toast.makeText(getContext(), getString(R.string.delete_songs_failure_toast), Toast.LENGTH_SHORT).show();
                         }
                         dismiss();
-                    }, error -> LogUtils.logException(TAG, "Failed to delete songs", error)));
+                    }, error -> {} ));
         } else {
             Toast.makeText(getContext(), R.string.delete_songs_failure_toast, Toast.LENGTH_LONG).show();
             dismiss();

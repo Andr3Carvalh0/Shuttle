@@ -28,7 +28,6 @@ import com.simplecity.amp_library.ui.screens.playlist.dialog.CreatePlaylistDialo
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.views.ContextualToolbar
 import com.simplecity.amp_library.utils.ContextualToolbarHelper
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.extensions.share
 import com.simplecity.amp_library.utils.menu.song.SongMenuUtils
@@ -182,7 +181,7 @@ class SongListFragment :
 
             playlistMenuDisposable?.dispose()
             playlistMenuDisposable = playlistMenuHelper.createUpdatingPlaylistMenu(sub)
-                .doOnError { throwable -> LogUtils.logException(TAG, "setupContextualToolbar error", throwable) }
+                .doOnError { }
                 .subscribe()
 
             contextualToolbarHelper = ContextualToolbarHelper(context, contextualToolbar, object : ContextualToolbarHelper.Callback {

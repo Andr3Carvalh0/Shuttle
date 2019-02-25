@@ -121,7 +121,7 @@ public class ArtworkDialog {
                                 .forEach(file ->
                                         adapter.addItem(new ArtworkView(ArtworkProvider.Type.FOLDER, artworkProvider, glideListener, file, false)));
                     }
-                }, error -> LogUtils.logException(TAG, "Error getting artwork files", error));
+                }, error -> {});
 
         return new MaterialDialog.Builder(context)
                 .title(R.string.artwork_edit)
@@ -198,7 +198,7 @@ public class ArtworkDialog {
                             artworkView.setSelected(true);
                             adapter.addItem(0, artworkView);
                             recyclerView.scrollToPosition(0);
-                        }, error -> LogUtils.logException(TAG, "Error picking from gallery", error)))
+                        }, error -> {}))
                 .cancelable(false)
                 .build();
     }

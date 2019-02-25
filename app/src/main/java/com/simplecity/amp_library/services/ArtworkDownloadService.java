@@ -17,7 +17,6 @@ import com.simplecity.amp_library.data.Repository;
 import com.simplecity.amp_library.glide.loader.ArtworkModelLoader;
 import com.simplecity.amp_library.model.ArtworkProvider;
 import com.simplecity.amp_library.notifications.NotificationHelper;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
 import dagger.android.AndroidInjection;
@@ -107,7 +106,7 @@ public class ArtworkDownloadService extends Service {
                 .subscribe(list -> {
                     max = list.size();
                     updateProgress();
-                }, error -> LogUtils.logException(TAG, "Error determining max", error)));
+                }, error -> {} ));
 
         disposables.add(sharedItemsSingle.flatMapObservable(Observable::fromIterable)
                 .flatMap(artworkProvider -> Observable.just(artworkProvider)
@@ -127,7 +126,7 @@ public class ArtworkDownloadService extends Service {
                         }))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(item -> updateProgress(), error -> LogUtils.logException(TAG, "Error downloading artwork", error)));
+                .subscribe(item -> updateProgress(), error -> {}));
     }
 
     @Override

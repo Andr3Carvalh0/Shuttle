@@ -13,7 +13,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
-class ResumingServiceManager(val lifecycle: Lifecycle, val analyticsManager: AnalyticsManager) : LifecycleObserver {
+class ResumingServiceManager(val lifecycle: Lifecycle) : LifecycleObserver {
 
     init {
         lifecycle.addObserver(this)
@@ -32,7 +32,6 @@ class ResumingServiceManager(val lifecycle: Lifecycle, val analyticsManager: Ana
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeBy(
                             onSuccess = {
-                                analyticsManager.dropBreadcrumb("ResumingServiceManager", "Starting service after 300ms delay")
                                 context.startService(intent)
                                 completion?.invoke()
                             }

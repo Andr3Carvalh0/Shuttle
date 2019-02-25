@@ -5,7 +5,6 @@ import com.simplecity.amp_library.data.Repository.SongsRepository
 import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.playlist.list.PlaylistListContract.View
 import com.simplecity.amp_library.ui.screens.playlist.menu.PlaylistMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.menu.playlist.PlaylistMenuCallbacks
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -42,7 +41,7 @@ class PlaylistListPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { playlists -> view?.setData(playlists) },
-                { error -> LogUtils.logException(TAG, "Failed to load data", error) }
+                { }
             )
         )
     }

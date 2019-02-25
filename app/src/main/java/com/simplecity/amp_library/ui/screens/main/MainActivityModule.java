@@ -1,7 +1,6 @@
 package com.simplecity.amp_library.ui.screens.main;
 
 import android.support.v7.app.AppCompatActivity;
-import com.simplecity.amp_library.billing.BillingManager;
 import com.simplecity.amp_library.di.app.activity.ActivityModule;
 import com.simplecity.amp_library.di.app.activity.ActivityScope;
 import com.simplecity.amp_library.di.app.activity.fragment.DialogFragmentModule;
@@ -11,8 +10,6 @@ import com.simplecity.amp_library.ui.common.EqualizerModule;
 import com.simplecity.amp_library.ui.dialog.ChangelogDialog;
 import com.simplecity.amp_library.ui.dialog.DeleteDialog;
 import com.simplecity.amp_library.ui.dialog.InclExclDialog;
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog;
-import com.simplecity.amp_library.ui.dialog.UpgradeNagDialog;
 import com.simplecity.amp_library.ui.dialog.WeekSelectorDialog;
 import com.simplecity.amp_library.ui.screens.album.detail.AlbumDetailFragment;
 import com.simplecity.amp_library.ui.screens.album.detail.AlbumsDetailFragmentModule;
@@ -68,11 +65,6 @@ public abstract class MainActivityModule {
     @Binds
     @ActivityScope
     abstract AppCompatActivity appCompatActivity(MainActivity mainActivity);
-
-    @Provides
-    static BillingManager.BillingUpdatesListener provideBillingUpdatesListener(MainActivity mainActivity) {
-        return mainActivity;
-    }
 
     @FragmentScope
     @ContributesAndroidInjector(modules = LibraryFragmentModule.class)
@@ -187,14 +179,6 @@ public abstract class MainActivityModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = DialogFragmentModule.class)
     abstract InclExclDialog inclExclDialogInjector();
-
-    @FragmentScope
-    @ContributesAndroidInjector(modules = DialogFragmentModule.class)
-    abstract UpgradeDialog upgradeDialogInjector();
-
-    @FragmentScope
-    @ContributesAndroidInjector(modules = DialogFragmentModule.class)
-    abstract UpgradeNagDialog UpgradeNagDialogInjector();
 
     @FragmentScope
     @ContributesAndroidInjector(modules = DialogFragmentModule.class)

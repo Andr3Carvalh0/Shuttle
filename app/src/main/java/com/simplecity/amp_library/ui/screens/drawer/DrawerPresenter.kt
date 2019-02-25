@@ -3,10 +3,9 @@ package com.simplecity.amp_library.ui.screens.drawer
 import com.simplecity.amp_library.ShuttleApplication
 import com.simplecity.amp_library.data.Repository
 import com.simplecity.amp_library.model.Playlist
-import com.simplecity.amp_library.ui.common.PurchasePresenter
+import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.playlist.menu.PlaylistMenuContract
 import com.simplecity.amp_library.ui.screens.playlist.menu.PlaylistMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.PermissionUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
@@ -23,7 +22,7 @@ constructor(
     private val playlistsRepository: Repository.PlaylistsRepository,
     private val settingsManager: SettingsManager,
     private val playlistMenuPresenter: PlaylistMenuPresenter
-) : PurchasePresenter<DrawerView>(),
+) : Presenter<DrawerView>(),
     PlaylistMenuContract.Presenter by playlistMenuPresenter {
 
     override fun bindView(view: DrawerView) {
@@ -42,8 +41,6 @@ constructor(
                     NavigationEventRelay.NavigationEvent.Type.FOLDERS_SELECTED -> if (drawerView != null) {
                         if (ShuttleUtils.isUpgraded(application, settingsManager)) {
                             drawerView.setDrawerItemSelected(DrawerParent.Type.FOLDERS)
-                        } else {
-                            upgradeClicked()
                         }
                     }
                 }
@@ -67,7 +64,7 @@ constructor(
                 .doFinally { drawerView.setPlaylistItems(emptyList()) }
                 .subscribe(
                     { drawerView.setPlaylistItems(it) },
-                    { error -> LogUtils.logException(TAG, "Error refreshing DrawerFragment adapter items", error) }
+                    { }
                 ))
         }
     }

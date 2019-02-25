@@ -50,10 +50,6 @@ abstract class PlayerViewAdapter : PlayerView {
 
     }
 
-    override fun showUpgradeDialog() {
-
-    }
-
     override fun presentCreatePlaylistDialog(songs: List<Song>) {
 
     }

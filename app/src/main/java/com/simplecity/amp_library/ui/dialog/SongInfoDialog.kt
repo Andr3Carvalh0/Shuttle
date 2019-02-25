@@ -15,7 +15,6 @@ import com.simplecity.amp_library.R.id.album
 import com.simplecity.amp_library.R.id.artist
 import com.simplecity.amp_library.ShuttleApplication
 import com.simplecity.amp_library.model.Song
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -62,11 +61,10 @@ class SongInfoDialog : DialogFragment() {
         val genreKey = genreView.findViewById<TextView>(R.id.key)
         genreKey.setText(R.string.genre_title)
         val genreValue = genreView.findViewById<TextView>(R.id.value)
-        song.getGenre(context!!.applicationContext as ShuttleApplication)
+        song.getGenre(requireContext().applicationContext as ShuttleApplication)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ genre -> genreValue.text = genre.name },
-                { error -> LogUtils.logException(TAG, "Error getting genre", error) })
+            .subscribe({ genre -> genreValue.text = genre.name }, {})
 
         val albumArtistView = view.findViewById<View>(R.id.album_artist)
         val albumArtistKey = albumArtistView.findViewById<TextView>(R.id.key)
@@ -124,8 +122,7 @@ class SongInfoDialog : DialogFragment() {
         Observable.fromCallable { song.getPlayCount(context) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ playCount -> playCountValue.text = playCount.toString() },
-                { error -> LogUtils.logException(TAG, "Error getting play count", error) })
+            .subscribe({ playCount -> playCountValue.text = playCount.toString() }, { })
 
         return MaterialDialog.Builder(context!!)
             .title(context!!.getString(R.string.dialog_song_info_title))

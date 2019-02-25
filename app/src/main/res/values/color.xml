@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#2D2D2D</color>
+    <color name="colorPrimaryDark">#191919</color>
+    <color name="colorAccent">#76C124</color>
 
     <color name="list_divider_dark">#1EFFFFFF</color>
     <color name="list_divider_light">#1E000000</color>
@@ -32,5 +32,9 @@
     <color name="ic_launcher_background">#03A9F4</color>
 
     <color name="text_highlight">#6680cbc4</color>
+
+    <color name="pa_primaryColor">#2D2D2D</color>
+    <color name="pa_primaryColorDark">#191919</color>
+    <color name="pa_accentColor">#76C124</color>
 
 </resources>

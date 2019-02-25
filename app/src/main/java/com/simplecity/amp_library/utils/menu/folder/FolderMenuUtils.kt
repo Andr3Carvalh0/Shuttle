@@ -23,7 +23,6 @@ import com.simplecity.amp_library.ui.modelviews.FolderView
 import com.simplecity.amp_library.ui.screens.playlist.dialog.CreatePlaylistDialog
 import com.simplecity.amp_library.utils.CustomMediaScanner
 import com.simplecity.amp_library.utils.FileHelper
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.menu.MenuUtils
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
 import com.simplecity.amp_library.utils.playlists.PlaylistMenuHelper
@@ -275,19 +274,16 @@ object FolderMenuUtils {
     ): PopupMenu.OnMenuItemClickListener {
         return PopupMenu.OnMenuItemClickListener { menuItem ->
 
-            val errorHandler: (Throwable) -> Unit = { e -> LogUtils.logException(TAG, "getFileMenuClickListener threw error", e) }
-
             when (menuItem.itemId) {
                 R.id.playNext -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ song -> mediaManager.playNext(listOf(song)) { callbacks.showToast(it) } }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ song -> mediaManager.playNext(listOf(song)) { callbacks.showToast(it) } }, { })
                     return@OnMenuItemClickListener true
                 }
                 Defs.NEW_PLAYLIST -> {
                     getSongForFile(songsRepository, fileObject).subscribe(
                         { song ->
                             CreatePlaylistDialog.newInstance(listOf(song)).show(fragment.childFragmentManager, "CreatePlaylistDialog")
-                        },
-                        errorHandler
+                        }, { }
                     )
                     return@OnMenuItemClickListener true
                 }
@@ -298,11 +294,11 @@ object FolderMenuUtils {
                             menuItem.intent.getSerializableExtra(PlaylistManager.ARG_PLAYLIST) as Playlist,
                             listOf(song)
                         ) { callbacks.onPlaylistItemsInserted() }
-                    }, errorHandler)
+                    }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.addToQueue -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ song -> MenuUtils.addToQueue(mediaManager, listOf(song), { callbacks.onQueueItemsInserted(it) }) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ song -> MenuUtils.addToQueue(mediaManager, listOf(song), { callbacks.onQueueItemsInserted(it) }) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.scan -> {
@@ -310,27 +306,27 @@ object FolderMenuUtils {
                     return@OnMenuItemClickListener true
                 }
                 R.id.editTags -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.showTagEditor(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.showTagEditor(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.share -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.shareSong(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.shareSong(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.ringtone -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.setRingtone(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.setRingtone(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.songInfo -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.showSongInfo(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.showSongInfo(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.blacklist -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.blacklist(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.blacklist(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.whitelist -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.whitelist(it) }, errorHandler)
+                    getSongForFile(songsRepository, fileObject).subscribe({ callbacks.whitelist(it) }, { })
                     return@OnMenuItemClickListener true
                 }
                 R.id.rename -> {

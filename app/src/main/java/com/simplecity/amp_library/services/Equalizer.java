@@ -11,7 +11,6 @@ import android.media.audiofx.Virtualizer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.annimon.stream.Stream;
-import com.crashlytics.android.Crashlytics;
 import com.simplecity.amp_library.utils.SettingsManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -307,9 +306,7 @@ public class Equalizer {
             for (Integer sessionId : mAudioSessions.keySet()) {
                 updateDsp(mAudioSessions.get(sessionId));
             }
-        } catch (NoSuchMethodError e) {
-            Crashlytics.log("No such method error thrown when updating equalizer.. " + e.getMessage());
-        }
+        } catch (NoSuchMethodError e) { }
     }
 
     private void updateDsp(EffectSet session) {

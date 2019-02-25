@@ -10,7 +10,6 @@ import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay.NavigationEvent
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract.View
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.RingtoneManager
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
 import io.reactivex.Observable
@@ -85,7 +84,7 @@ open class SongMenuPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { albumArtist -> navigationEventRelay.sendEvent(NavigationEvent(NavigationEvent.Type.GO_TO_ARTIST, albumArtist, true)) },
-                { error -> LogUtils.logException(TAG, "Failed to retrieve album artist", error) }
+                { }
             ))
     }
 
@@ -98,7 +97,7 @@ open class SongMenuPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { album -> navigationEventRelay.sendEvent(NavigationEvent(NavigationEvent.Type.GO_TO_ALBUM, album, true)) },
-                { error -> LogUtils.logException(TAG, "Failed to retrieve album", error) }
+                { }
             ))
     }
 
@@ -108,7 +107,7 @@ open class SongMenuPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { genre -> navigationEventRelay.sendEvent(NavigationEvent(NavigationEvent.Type.GO_TO_GENRE, genre, true)) },
-                { error -> LogUtils.logException(TAG, "Failed to retrieve genre", error) }
+                { }
             ))
     }
 
@@ -119,7 +118,7 @@ open class SongMenuPresenter @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { items -> dst(items) },
-                    { error -> LogUtils.logException(TAG, "Failed to transform src single", error) }
+                    { }
                 )
         )
     }

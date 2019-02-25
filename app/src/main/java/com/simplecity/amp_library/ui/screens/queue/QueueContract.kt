@@ -25,8 +25,6 @@ interface QueueContract {
 
         fun onRemovedFromQueue(queueItems: List<QueueItem>)
 
-        fun showUpgradeDialog()
-
         fun setQueueSwipeLocked(locked: Boolean)
 
         fun showCreatePlaylistDialog(songs: List<Song>)

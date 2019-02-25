@@ -27,14 +27,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.ShuttleApplication;
-import com.simplecity.amp_library.billing.BillingManager;
 import com.simplecity.amp_library.model.InclExclItem;
 import com.simplecity.amp_library.ui.dialog.ChangelogDialog;
 import com.simplecity.amp_library.ui.dialog.InclExclDialog;
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog;
 import com.simplecity.amp_library.ui.screens.drawer.DrawerLockManager;
 import com.simplecity.amp_library.ui.screens.drawer.MiniPlayerLockManager;
-import com.simplecity.amp_library.utils.AnalyticsManager;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
 import dagger.android.support.AndroidSupportInjection;
@@ -138,12 +135,6 @@ public class SettingsParentFragment extends BaseNavigationController implements
         SettingsPresenter settingsPresenter;
 
         @Inject
-        BillingManager billingManager;
-
-        @Inject
-        AnalyticsManager analyticsManager;
-
-        @Inject
         SettingsManager settingsManager;
 
         private ColorChooserDialog primaryColorDialog;
@@ -215,17 +206,6 @@ public class SettingsParentFragment extends BaseNavigationController implements
             if (ratePreference != null) {
                 ratePreference.setOnPreferenceClickListener(preference -> {
                     supportPresenter.rateClicked();
-                    return true;
-                });
-            }
-
-            Preference restorePurchasesPreference = findPreference(SettingsManager.KEY_PREF_RESTORE_PURCHASES);
-            if (restorePurchasesPreference != null) {
-                if (ShuttleUtils.isAmazonBuild() || ShuttleUtils.isUpgraded((ShuttleApplication) getContext().getApplicationContext(), settingsManager)) {
-                    restorePurchasesPreference.setVisible(false);
-                }
-                restorePurchasesPreference.setOnPreferenceClickListener(preference -> {
-                    settingsPresenter.restorePurchasesClicked();
                     return true;
                 });
             }
@@ -389,14 +369,6 @@ public class SettingsParentFragment extends BaseNavigationController implements
                     return true;
                 });
             }
-
-            // Upgrade preference
-            Preference upgradePreference = findPreference(SettingsManager.KEY_PREF_UPGRADE);
-            if (upgradePreference != null) {
-                if (ShuttleUtils.isUpgraded((ShuttleApplication) getContext().getApplicationContext(), settingsManager)) {
-                    upgradePreference.setVisible(false);
-                }
-            }
         }
 
         @Override
@@ -445,9 +417,6 @@ public class SettingsParentFragment extends BaseNavigationController implements
                         break;
                     case "pref_blacklist":
                         getNavigationController().pushViewController(SettingsFragment.newInstance(R.xml.settings_blacklist), "BlacklistSettings");
-                        break;
-                    case "pref_upgrade":
-                        settingsPresenter.upgradeClicked();
                         break;
                 }
             }
@@ -524,11 +493,6 @@ public class SettingsParentFragment extends BaseNavigationController implements
         @Override
         public void showChangelog() {
             ChangelogDialog.Companion.newInstance().show(getChildFragmentManager());
-        }
-
-        @Override
-        public void showUpgradeDialog() {
-            new UpgradeDialog().show(getChildFragmentManager());
         }
 
         @Override

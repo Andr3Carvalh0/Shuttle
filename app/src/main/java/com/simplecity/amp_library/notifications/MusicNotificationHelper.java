@@ -27,8 +27,6 @@ import com.simplecity.amp_library.glide.utils.GlideUtils;
 import com.simplecity.amp_library.model.Song;
 import com.simplecity.amp_library.playback.MusicService;
 import com.simplecity.amp_library.playback.constants.ServiceCommand;
-import com.simplecity.amp_library.utils.AnalyticsManager;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.PlaceholderProvider;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.playlists.FavoritesPlaylistManager;
@@ -50,13 +48,10 @@ public class MusicNotificationHelper extends NotificationHelper {
 
     private Handler handler;
 
-    private AnalyticsManager analyticsManager;
-
-    public MusicNotificationHelper(Context context, AnalyticsManager analyticsManager) {
+    public MusicNotificationHelper(Context context) {
         super(context);
 
         handler = new Handler(Looper.getMainLooper());
-        this.analyticsManager = analyticsManager;
     }
 
     public NotificationCompat.Builder getBuilder(Context context, @NonNull Song song, @NonNull MediaSessionCompat.Token mediaSessionToken, @Nullable Bitmap bitmap, boolean isPlaying,
@@ -127,9 +122,7 @@ public class MusicNotificationHelper extends NotificationHelper {
                     this.isFavorite = isFavorite;
                     notification = getBuilder(context, song, mediaSessionToken, MusicNotificationHelper.this.bitmap, isPlaying, isFavorite).build();
                     notify(notification);
-                }, error -> {
-                    LogUtils.logException(TAG, "MusicNotificationHelper failed to present notification", error);
-                });
+                }, error -> { });
 
         handler.post(() -> Glide.with(context)
                 .load(song)
@@ -145,9 +138,7 @@ public class MusicNotificationHelper extends NotificationHelper {
                         try {
                             notification = getBuilder(context, song, mediaSessionToken, bitmap, isPlaying, isFavorite).build();
                             MusicNotificationHelper.this.notify(notification);
-                        } catch (NullPointerException | ConcurrentModificationException e) {
-                            LogUtils.logException(TAG, "Exception while attempting to update notification with glide image.", e);
-                        }
+                        } catch (NullPointerException | ConcurrentModificationException e) { }
                     }
 
                     @Override
@@ -157,9 +148,7 @@ public class MusicNotificationHelper extends NotificationHelper {
                         try {
                             notification = getBuilder(context, song, mediaSessionToken, bitmap, isPlaying, isFavorite).build();
                             MusicNotificationHelper.this.notify(NOTIFICATION_ID, notification);
-                        } catch (IllegalArgumentException error) {
-                            LogUtils.logException(TAG, "Exception while attempting to update notification with error image", error);
-                        }
+                        } catch (IllegalArgumentException error) { }
                     }
                 }));
     }
@@ -176,13 +165,11 @@ public class MusicNotificationHelper extends NotificationHelper {
     ) {
         notify(service, playlistsRepository, songsRepository, song, isPlaying, mediaSessionToken, settingsManager, favoritesPlaylistManager);
         try {
-            analyticsManager.dropBreadcrumb(TAG, "startForeground() called");
             Log.w(TAG, "service.startForeground called");
             service.startForeground(NOTIFICATION_ID, notification);
             return true;
         } catch (RuntimeException e) {
             Log.e(TAG, "startForeground not called, error: " + e);
-            LogUtils.logException(TAG, "Error starting foreground notification", e);
             return false;
         }
     }

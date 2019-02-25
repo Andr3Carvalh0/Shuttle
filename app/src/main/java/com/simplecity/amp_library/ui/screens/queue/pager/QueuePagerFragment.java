@@ -23,7 +23,6 @@ import com.simplecity.amp_library.glide.preloader.RecyclerViewPreloader;
 import com.simplecity.amp_library.ui.common.BaseFragment;
 import com.simplecity.amp_library.ui.common.RequestManagerProvider;
 import com.simplecity.amp_library.ui.modelviews.QueuePagerItemView;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.PlaceholderProvider;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
@@ -117,7 +116,7 @@ public class QueuePagerFragment extends BaseFragment implements
                                             mediaManager.setQueuePosition(snapPosition);
                                         }
                                     },
-                                    throwable -> LogUtils.logException(TAG, "Error setting queue position", throwable)
+                                    throwable -> {}
                             );
                 }
 

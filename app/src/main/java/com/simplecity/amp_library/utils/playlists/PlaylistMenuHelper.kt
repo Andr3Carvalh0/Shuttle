@@ -5,7 +5,6 @@ import android.view.SubMenu
 import com.simplecity.amp_library.R
 import com.simplecity.amp_library.data.PlaylistsRepository
 import com.simplecity.amp_library.playback.MediaManager
-import com.simplecity.amp_library.utils.LogUtils
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,7 +19,7 @@ class PlaylistMenuHelper @Inject constructor(
         return createPlaylistMenu(subMenu, false)
             .subscribe(
                 { },
-                { throwable -> LogUtils.logException(TAG, "createPlaylistMenu error", throwable) }
+                { }
             )
     }
 
@@ -41,7 +40,7 @@ class PlaylistMenuHelper @Inject constructor(
                 }
             }
             .ignoreElements()
-            .doOnError { throwable -> LogUtils.logException(TAG, "createUpdatingPlaylistMenu failed", throwable) }
+            .doOnError { }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

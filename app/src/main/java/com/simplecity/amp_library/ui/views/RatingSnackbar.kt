@@ -6,12 +6,10 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.TextView
 import com.simplecity.amp_library.R
-import com.simplecity.amp_library.utils.AnalyticsManager
 import com.simplecity.amp_library.utils.SettingsManager
 
 class RatingSnackbar(
-    private val settingsManager: SettingsManager,
-    private val analyticsManager: AnalyticsManager
+    private val settingsManager: SettingsManager
 ) {
 
     fun show(view: View, onClicked: () -> Unit) {
@@ -23,7 +21,6 @@ class RatingSnackbar(
                     .setDuration(15000)
                     .setAction(R.string.snackbar_rate_action) { v ->
                         onClicked.invoke()
-                        analyticsManager.logRateClicked()
                     }
                     .addCallback(object : Snackbar.Callback() {
                         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
@@ -40,8 +37,6 @@ class RatingSnackbar(
 
                 val snackbarText = snackbar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                 snackbarText?.setTextColor(Color.WHITE)
-
-                analyticsManager.logRateShown()
             }
 
             settingsManager.hasSeenRateSnackbar = true

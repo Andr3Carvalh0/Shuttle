@@ -116,21 +116,6 @@ public final class ShuttleUtils {
     }
 
     public static boolean isUpgraded(ShuttleApplication application, SettingsManager settingsManager) {
-
-        if (application.getIsUpgraded()) {
-            return true;
-        }
-
-        if (settingsManager.getIsLegacyUpgraded()) {
-            return true;
-        }
-
-        try {
-            return application.getPackageName().equals(Config.PACKAGE_NAME_PRO);
-        } catch (Exception ignored) {
-        }
-
-        //If something goes wrong, assume the user has the pro version
         return true;
     }
 

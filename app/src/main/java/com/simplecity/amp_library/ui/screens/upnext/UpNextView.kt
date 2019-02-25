@@ -15,7 +15,6 @@ import android.widget.LinearLayout
 import com.afollestad.aesthetic.Aesthetic
 import com.afollestad.aesthetic.ColorIsDarkState
 import com.afollestad.aesthetic.LightDarkColorState
-import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -37,7 +36,6 @@ import com.simplecity.amp_library.ui.screens.nowplaying.PlayerPresenter
 import com.simplecity.amp_library.ui.views.PlayerViewAdapter
 import com.simplecity.amp_library.ui.views.RepeatButton
 import com.simplecity.amp_library.ui.views.ShuffleButton
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import com.simplecity.amp_library.utils.color.ArgbEvaluator
@@ -234,7 +232,7 @@ class UpNextView constructor(context: Context, attrs: AttributeSet? = null, defS
                 } else if (seekBarChangeEvent is SeekBarStopChangeEvent) {
                     isSeeking = false
                 }
-            }, { error -> LogUtils.logException(TAG, "Error in seek change event", error) }))
+            }, { }))
 
             disposables.add(
                 sharedSeekBarEvents
@@ -242,7 +240,7 @@ class UpNextView constructor(context: Context, attrs: AttributeSet? = null, defS
                     .filter { it.fromUser() }
                     .debounce(15, TimeUnit.MILLISECONDS)
                     .subscribe({ seekBarChangeEvent -> playerPresenter.seekTo(seekBarChangeEvent.progress()) },
-                        { error -> LogUtils.logException(TAG, "Error receiving seekbar progress", error) })
+                        { })
             )
         }
     }
@@ -376,9 +374,7 @@ class UpNextView constructor(context: Context, attrs: AttributeSet? = null, defS
                 .take(1)
                 .subscribe(
                     { colorSet -> animateColors(this@UpNextView.colorSet, colorSet, 800, UnsafeConsumer { intermediateColorSet -> invalidateColors(intermediateColorSet) }, null) },
-                    { _ ->
-                        // Nothing ot do
-                    }
+                    { }
                 )
         }
     }

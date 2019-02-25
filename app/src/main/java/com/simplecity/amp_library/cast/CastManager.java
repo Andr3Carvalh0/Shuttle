@@ -11,7 +11,6 @@ import com.simplecity.amp_library.playback.CastPlayback;
 import com.simplecity.amp_library.playback.MediaPlayerPlayback;
 import com.simplecity.amp_library.playback.Playback;
 import com.simplecity.amp_library.playback.PlaybackManager;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
 
@@ -122,7 +121,6 @@ public class CastManager {
             CastContext.getSharedInstance(context);
             return true;
         } catch (Exception e) {
-            LogUtils.logException(TAG, "Cast not available", e);
             return false;
         }
     }

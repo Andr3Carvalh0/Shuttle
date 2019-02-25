@@ -7,7 +7,6 @@ import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.playback.MediaManager
 import com.simplecity.amp_library.ui.common.Presenter
 import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.extensions.getSongs
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -62,7 +61,7 @@ class GenreMenuPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     onSuccess,
-                    { error -> LogUtils.logException(AlbumMenuPresenter.TAG, "Failed to retrieve songs", error) }
+                    { }
                 )
         )
     }

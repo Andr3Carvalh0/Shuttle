@@ -203,7 +203,6 @@ class SearchFragment :
     }
 
     override fun setLoading(loading: Boolean) {
-        analyticsManager.dropBreadcrumb(TAG, "setLoading..")
         adapter.setItems(listOf(loadingView))
     }
 
@@ -248,7 +247,6 @@ class SearchFragment :
             viewModels.add(emptyView)
         }
 
-        analyticsManager!!.dropBreadcrumb(TAG, "setData..")
         setDataDisposable = adapter.setItems(viewModels, object : CompletionListUpdateCallbackAdapter() {
             override fun onComplete() {
                 super.onComplete()
@@ -362,10 +360,6 @@ class SearchFragment :
         inputMethodManager.hideSoftInputFromWindow(this.view!!.windowToken, 0)
         val transitionName = ViewCompat.getTransitionName(transitionView)
         searchView.handler.postDelayed({ pushDetailFragment(AlbumDetailFragment.newInstance(album, transitionName!!), transitionView) }, 50)
-    }
-
-    override fun showUpgradeDialog() {
-        UpgradeDialog().show(childFragmentManager)
     }
 
     private fun pushDetailFragment(fragment: Fragment, transitionView: View?) {

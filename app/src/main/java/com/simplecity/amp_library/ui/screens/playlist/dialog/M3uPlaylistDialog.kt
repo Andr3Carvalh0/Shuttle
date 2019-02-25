@@ -16,7 +16,6 @@ import com.simplecity.amp_library.di.app.activity.fragment.FragmentModule
 import com.simplecity.amp_library.di.app.activity.fragment.FragmentScope
 import com.simplecity.amp_library.model.Playlist
 import com.simplecity.amp_library.model.Song
-import com.simplecity.amp_library.utils.LogUtils
 import dagger.Binds
 import dagger.Module
 import dagger.android.support.AndroidSupportInjection
@@ -123,7 +122,7 @@ class M3uPlaylistDialog : DialogFragment() {
                         Toast.makeText(context, R.string.playlist_save_failed, Toast.LENGTH_SHORT).show()
                     }
                 },
-                { error -> LogUtils.logException(TAG, "Error saving m3u playlist", error) }
+                { }
             )
 
         return progressDialog

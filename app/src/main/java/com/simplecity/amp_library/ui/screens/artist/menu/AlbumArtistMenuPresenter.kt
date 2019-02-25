@@ -11,7 +11,6 @@ import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay.NavigationEvent
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay.NavigationEvent.Type
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.extensions.getSongs
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
@@ -104,7 +103,7 @@ class AlbumArtistMenuPresenter @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { items -> dst(items) },
-                    { error -> LogUtils.logException(SongMenuPresenter.TAG, "Failed to transform src single", error) }
+                    { }
                 )
         )
     }
@@ -116,7 +115,7 @@ class AlbumArtistMenuPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     onSuccess,
-                    { error -> LogUtils.logException(TAG, "Failed to retrieve songs", error) }
+                    { }
                 )
         )
     }

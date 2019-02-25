@@ -34,7 +34,6 @@ import com.simplecity.amp_library.ui.views.ContextualToolbar
 import com.simplecity.amp_library.ui.views.recyclerview.GridDividerDecoration
 import com.simplecity.amp_library.utils.ArtworkDialog
 import com.simplecity.amp_library.utils.ContextualToolbarHelper
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.menu.album.AlbumMenuUtils
@@ -321,7 +320,7 @@ class AlbumListFragment :
             playlistMenuDisposable?.dispose()
 
             playlistMenuDisposable = playlistMenuHelper.createUpdatingPlaylistMenu(submenu)
-                .doOnError { throwable -> LogUtils.logException(TAG, "setupContextualToolbar error", throwable) }
+                .doOnError { }
                 .onErrorComplete()
                 .subscribe()
 

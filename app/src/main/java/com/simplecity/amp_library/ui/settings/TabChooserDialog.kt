@@ -16,11 +16,9 @@ import com.annimon.stream.Stream
 import com.simplecity.amp_library.R
 import com.simplecity.amp_library.ShuttleApplication
 import com.simplecity.amp_library.model.CategoryItem
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog
 import com.simplecity.amp_library.ui.modelviews.TabViewModel
 import com.simplecity.amp_library.ui.screens.main.LibraryController
 import com.simplecity.amp_library.ui.views.recyclerview.ItemTouchHelperCallback
-import com.simplecity.amp_library.utils.AnalyticsManager
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import com.simplecityapps.recycler_adapter.adapter.ViewModelAdapter
@@ -29,8 +27,6 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class TabChooserDialog : DialogFragment() {
-
-    @Inject lateinit var analyticsManager: AnalyticsManager
 
     @Inject lateinit var settingsManager: SettingsManager
 
@@ -57,13 +53,7 @@ class TabChooserDialog : DialogFragment() {
                 itemTouchHelper.startDrag(holder)
             }
 
-            override fun onFolderChecked(tabViewModel: TabViewModel, viewHolder: TabViewModel.ViewHolder) {
-                if (!ShuttleUtils.isUpgraded(context!!.applicationContext as ShuttleApplication, settingsManager)) {
-                    viewHolder.checkBox.isChecked = false
-                    tabViewModel.categoryItem.isChecked = false
-                    UpgradeDialog().show(fragmentManager!!)
-                }
-            }
+            override fun onFolderChecked(tabViewModel: TabViewModel, viewHolder: TabViewModel.ViewHolder) {}
         }
 
         val items = CategoryItem.getCategoryItems(sharedPreferences)
@@ -73,7 +63,6 @@ class TabChooserDialog : DialogFragment() {
                 tabViewModel
             }
 
-        analyticsManager.dropBreadcrumb(TAG, "setItems()")
         adapter.setItems(items)
 
         val recyclerView = RecyclerView(context!!)

@@ -29,7 +29,6 @@ import com.simplecity.amp_library.model.Album;
 import com.simplecity.amp_library.model.AlbumArtist;
 import com.simplecity.amp_library.model.Song;
 import com.simplecity.amp_library.utils.CustomMediaScanner;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import dagger.android.support.AndroidSupportInjection;
 import java.io.File;
@@ -353,10 +352,7 @@ public class TaggerDialog extends DialogFragment {
                 progressDialog.dismiss();
             }
 
-            if (!isResumed() || getContext() == null) {
-                LogUtils.logException(TAG, "Save tags returning early.. Context null or dialog not resumed.", null);
-                return;
-            }
+            if (!isResumed() || getContext() == null) { return; }
 
             if (hasPermission) {
 

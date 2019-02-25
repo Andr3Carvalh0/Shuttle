@@ -19,7 +19,6 @@ import com.simplecity.amp_library.playback.constants.InternalIntents;
 import com.simplecity.amp_library.services.Equalizer;
 import com.simplecity.amp_library.ui.screens.queue.QueueItem;
 import com.simplecity.amp_library.ui.screens.queue.QueueItemKt;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.SleepTimer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -111,7 +110,7 @@ public class PlaybackManager implements Playback.Callbacks {
                             stop(true);
                         }
                     }
-                }, throwable -> LogUtils.logException(TAG, "Error consuming SleepTimer observable", throwable)));
+                }, throwable -> {} ));
     }
 
     @NonNull
@@ -189,7 +188,7 @@ public class PlaybackManager implements Playback.Callbacks {
                         notifyChange(InternalIntents.QUEUE_CHANGED);
                         queueManager.queuePosition = 0;
                         load(true, true, 0);
-                    }, error -> LogUtils.logException(TAG, "Error playing auto shuffle list", error)));
+                    }, error -> {} ));
         } else {
             queueManager.shuffleMode = QueueManager.ShuffleMode.OFF;
             queueManager.saveQueue(false);
@@ -340,7 +339,7 @@ public class PlaybackManager implements Playback.Callbacks {
                     if (!songs.isEmpty() && queueManager.getCurrentSong() != null) {
                         load(queueManager.getCurrentSong(), playWhenReady, (long) 0, null);
                     }
-                }, error -> LogUtils.logException(TAG, "Error opening file", error)));
+                }, error -> {} ));
     }
 
     private void restoreBookmark() {

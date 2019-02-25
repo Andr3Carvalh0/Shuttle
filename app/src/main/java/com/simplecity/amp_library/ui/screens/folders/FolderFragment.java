@@ -42,11 +42,9 @@ import com.simplecity.amp_library.ui.screens.tagger.TaggerDialog;
 import com.simplecity.amp_library.ui.views.BreadcrumbItem;
 import com.simplecity.amp_library.ui.views.ContextualToolbar;
 import com.simplecity.amp_library.ui.views.ThemedStatusBarView;
-import com.simplecity.amp_library.utils.AnalyticsManager;
 import com.simplecity.amp_library.utils.ContextualToolbarHelper;
 import com.simplecity.amp_library.utils.FileBrowser;
 import com.simplecity.amp_library.utils.FileHelper;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.RingtoneManager;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.extensions.SongExtKt;
@@ -153,8 +151,6 @@ public class FolderFragment extends BaseFragment implements
     @Inject
     SettingsManager settingsManager;
 
-    @Inject
-    AnalyticsManager analyticsManager;
 
     @Inject
     RingtoneManager ringtoneManager;
@@ -250,7 +246,7 @@ public class FolderFragment extends BaseFragment implements
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     this::changeDir,
-                                    error -> LogUtils.logException(TAG, "Error in onResume", error))
+                                    error -> {})
             );
         }
 
@@ -411,7 +407,6 @@ public class FolderFragment extends BaseFragment implements
                 .subscribe(
                         adaptableItems -> {
                             if (adapter != null) {
-                                analyticsManager.dropBreadcrumb(TAG, "setItems()");
                                 setItemsDisposable = adapter.setItems(adaptableItems);
                             }
                             if (breadcrumb != null) {
@@ -422,7 +417,7 @@ public class FolderFragment extends BaseFragment implements
                             }
                             updateMenuItems();
                         },
-                        error -> LogUtils.logException(TAG, "Error changing dir", error))
+                        error -> {})
         );
     }
 
@@ -469,7 +464,7 @@ public class FolderFragment extends BaseFragment implements
                                         return Unit.INSTANCE;
                                     });
                                 },
-                                error -> LogUtils.logException(TAG, "Error playing all", error));
+                                error -> {});
             } else {
                 changeDir(new File(folderView.baseFileObject.path));
             }

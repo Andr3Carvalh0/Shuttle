@@ -13,7 +13,6 @@ import com.simplecity.amp_library.ui.screens.genre.menu.GenreMenuContract
 import com.simplecity.amp_library.ui.screens.genre.menu.GenreMenuPresenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.PermissionUtils
 import com.simplecity.amp_library.utils.extensions.getSongsObservable
@@ -138,9 +137,7 @@ class GenreDetailPresenter @AssistedInject constructor(
                     view?.fadeInSlideShowAlbum(currentSlideShowAlbum, newAlbum)
                     currentSlideShowAlbum = newAlbum
                 }
-            }, { error ->
-                LogUtils.logException(TAG, "startSlideShow threw error", error)
-            })
+            }, { })
         )
     }
 
@@ -167,7 +164,7 @@ class GenreDetailPresenter @AssistedInject constructor(
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { items -> dst(items) },
-                    { error -> LogUtils.logException(SongMenuPresenter.TAG, "Failed to transform src single", error) }
+                    { }
                 )
         )
     }

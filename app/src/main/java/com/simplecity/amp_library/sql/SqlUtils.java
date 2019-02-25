@@ -6,7 +6,6 @@ import android.support.annotation.WorkerThread;
 import android.util.Log;
 import com.simplecity.amp_library.BuildConfig;
 import com.simplecity.amp_library.model.Query;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.ThreadUtils;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -62,7 +61,6 @@ public class SqlUtils {
                     } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
-                LogUtils.logException(TAG, "createSingle threw an error", e);
             } finally {
                 cursor.close();
             }
@@ -82,7 +80,6 @@ public class SqlUtils {
                     } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
-                LogUtils.logException(TAG, "createActionableQuery threw an error", e);
             } finally {
                 cursor.close();
             }
@@ -108,7 +105,6 @@ public class SqlUtils {
                     }
                 }
             } catch (Exception e) {
-                LogUtils.logException(TAG, "createSingleQuery threw an error", e);
                 e.printStackTrace();
             } finally {
                 cursor.close();

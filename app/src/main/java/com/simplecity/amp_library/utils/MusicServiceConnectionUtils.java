@@ -23,8 +23,8 @@ public class MusicServiceConnectionUtils {
 
     }
 
-    public static void bindToService(Lifecycle lifecycle, Context context, AnalyticsManager analyticsManager, ServiceConnection callback, UnsafeConsumer<ServiceToken> tokenCallback) {
-        new ResumingServiceManager(lifecycle, analyticsManager).startService(context, new Intent(context, MusicService.class), () -> {
+    public static void bindToService(Lifecycle lifecycle, Context context, ServiceConnection callback, UnsafeConsumer<ServiceToken> tokenCallback) {
+        new ResumingServiceManager(lifecycle).startService(context, new Intent(context, MusicService.class), () -> {
             ServiceBinder binder = new ServiceBinder(callback);
             if (context.bindService(new Intent().setClass(context, MusicService.class), binder, 0)) {
                 connectionMap.put(context, binder);

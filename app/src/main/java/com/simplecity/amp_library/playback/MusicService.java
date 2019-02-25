@@ -18,7 +18,6 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.util.Log;
 import android.widget.Toast;
-import com.crashlytics.android.Crashlytics;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.ShuttleApplication;
 import com.simplecity.amp_library.androidauto.MediaIdHelper;
@@ -35,8 +34,6 @@ import com.simplecity.amp_library.playback.constants.ShortcutCommands;
 import com.simplecity.amp_library.playback.constants.WidgetManager;
 import com.simplecity.amp_library.services.Equalizer;
 import com.simplecity.amp_library.ui.screens.queue.QueueItem;
-import com.simplecity.amp_library.utils.AnalyticsManager;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
 import com.simplecity.amp_library.utils.playlists.FavoritesPlaylistManager;
@@ -125,9 +122,6 @@ public class MusicService extends MediaBrowserServiceCompat {
     SettingsManager settingsManager;
 
     @Inject
-    AnalyticsManager analyticsManager;
-
-    @Inject
     FavoritesPlaylistManager favoritesPlaylistManager;
 
     @SuppressLint("InlinedApi")
@@ -166,11 +160,11 @@ public class MusicService extends MediaBrowserServiceCompat {
             castManager = new CastManager(this, playbackManager);
         }
 
-        bluetoothManager = new BluetoothManager(playbackManager, analyticsManager, musicServiceCallbacks, settingsManager);
+        bluetoothManager = new BluetoothManager(playbackManager, musicServiceCallbacks, settingsManager);
 
         headsetManager = new HeadsetManager(playbackManager, playbackSettingsManager);
 
-        notificationHelper = new MusicNotificationHelper(this, analyticsManager);
+        notificationHelper = new MusicNotificationHelper(this);
 
         notificationStateHandler = new NotificationStateHandler(this);
 
@@ -199,7 +193,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         this.shutdownIntent = PendingIntent.getService(this, 0, shutdownIntent, 0);
 
-        analyticsManager.dropBreadcrumb(TAG, "onCreate(), scheduling delayed shutdown");
         scheduleDelayedShutdown();
 
         playbackManager.reloadQueue();
@@ -207,8 +200,6 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public IBinder onBind(final Intent intent) {
-
-        analyticsManager.dropBreadcrumb(TAG, "onBind().. cancelShutdown()");
         cancelShutdown();
         serviceInUse = true;
 
@@ -258,15 +249,12 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public void onRebind(Intent intent) {
-        analyticsManager.dropBreadcrumb(TAG, "onRebind().. cancelShutdown()");
         cancelShutdown();
         serviceInUse = true;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        analyticsManager.dropBreadcrumb(TAG, "onUnbind()");
-
         serviceInUse = false;
         saveState(true);
 
@@ -277,12 +265,10 @@ public class MusicService extends MediaBrowserServiceCompat {
             // If there is a playlist but playback is paused, then wait a while before stopping the service, so that pause/resume isn't slow.
             // Also delay stopping the service if we're transitioning between tracks.
         } else if (!queueManager.getCurrentPlaylist().isEmpty()) {
-            analyticsManager.dropBreadcrumb(TAG, "onUnbind() scheduling delayed shutdown.");
             scheduleDelayedShutdown();
             return true;
         }
 
-        analyticsManager.dropBreadcrumb(TAG, "stopSelf() called");
         stopSelf(serviceStartId);
 
         return true;
@@ -290,24 +276,17 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        analyticsManager.dropBreadcrumb(TAG, "onTaskRemoved()");
-
         // Fixme:
         //  playbackManager.willResumePlayback() returns true even after we've manually paused.
         //  This means we don't call stopSelf(), which in turn causes the service to act as if it has crashed, and will recreate itself unnecessarily.
 
-        if (!isPlaying() && !playbackManager.willResumePlayback()) {
-            analyticsManager.dropBreadcrumb(TAG, "stopSelf() called");
-            stopSelf();
-        }
+        if (!isPlaying() && !playbackManager.willResumePlayback()) { stopSelf(); }
 
         super.onTaskRemoved(rootIntent);
     }
 
     @Override
     public void onDestroy() {
-        analyticsManager.dropBreadcrumb(TAG, "onDestroy()");
-
         saveState(true);
 
         //Shutdown the EQ
@@ -349,7 +328,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         if (intent != null) {
             String action = intent.getAction();
             String command = intent.getStringExtra(MediaButtonCommand.CMD_NAME);
-            analyticsManager.dropBreadcrumb(TAG, String.format("onStartCommand() Action: %s, Command: %s", action, command));
             if (command != null) {
                 action = commandToAction(command);
             }
@@ -480,7 +458,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         }
 
         // Make sure the service will shut down on its own if it was just started but not bound to and nothing is playing
-        analyticsManager.dropBreadcrumb(TAG, "onStartCommand() scheduling delayed shutdown");
         scheduleDelayedShutdown();
 
         return START_STICKY;
@@ -499,7 +476,6 @@ public class MusicService extends MediaBrowserServiceCompat {
             }
 
             if (action != null) {
-                analyticsManager.dropBreadcrumb(TAG, String.format("onReceive() Action: %s, Command: %s", action, command));
                 switch (action) {
                     case ServiceCommand.NEXT:
                         gotoNext(true);
@@ -563,8 +539,6 @@ public class MusicService extends MediaBrowserServiceCompat {
             return;
         }
 
-        analyticsManager.dropBreadcrumb(TAG, "releaseServiceUiAndStop()");
-
         playbackManager.release();
 
         cancelNotification();
@@ -576,7 +550,6 @@ public class MusicService extends MediaBrowserServiceCompat {
             Intent shutdownEqualizer = new Intent(MusicService.this, Equalizer.class);
             stopService(shutdownEqualizer);
 
-            analyticsManager.dropBreadcrumb(TAG, "stopSelf() called");
             stopSelf(serviceStartId);
         }
     }
@@ -693,7 +666,6 @@ public class MusicService extends MediaBrowserServiceCompat {
      * Stops playback
      */
     public void stop() {
-        analyticsManager.dropBreadcrumb(TAG, "stop()");
         playbackManager.stop(true);
     }
 
@@ -703,7 +675,6 @@ public class MusicService extends MediaBrowserServiceCompat {
      * @param canFade whether we are allowed to fade out before pausing.
      */
     public void pause(boolean canFade) {
-        analyticsManager.dropBreadcrumb(TAG, "pause()");
         playbackManager.pause(canFade);
     }
 
@@ -919,19 +890,16 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     private void scheduleDelayedShutdown() {
         if (isPlaying() || serviceInUse || playbackManager.willResumePlayback()) {
-            analyticsManager.dropBreadcrumb(TAG,
                     String.format("scheduleDelayedShutdown called.. returning early. isPlaying: %s service in use: %s will resume playback: %s",
-                            isPlaying(), serviceInUse, playbackManager.willResumePlayback()));
+                            isPlaying(), serviceInUse, playbackManager.willResumePlayback());
             return;
         }
 
-        analyticsManager.dropBreadcrumb(TAG, "scheduleDelayedShutdown for 5 mins from now");
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 60 * 1000 /* 5 mins */, shutdownIntent);
         shutdownScheduled = true;
     }
 
     private void cancelShutdown() {
-        analyticsManager.dropBreadcrumb(TAG, "cancelShutdown() called. Shutdown scheduled: " + shutdownScheduled);
         if (shutdownScheduled) {
             alarmManager.cancel(shutdownIntent);
             shutdownScheduled = false;
@@ -962,9 +930,7 @@ public class MusicService extends MediaBrowserServiceCompat {
                         notificationHelper.notify(this, playlistsRepository, songsRepository, queueManager.getCurrentSong(), isPlaying(), playbackManager.getMediaSessionToken(), settingsManager,
                                 favoritesPlaylistManager);
                     }
-                } catch (ConcurrentModificationException e) {
-                    LogUtils.logException(TAG, "Exception while attempting to show notification", e);
-                }
+                } catch (ConcurrentModificationException e) { }
                 stopForegroundImpl(false, false);
                 break;
             case NotifyMode.NONE:
@@ -1012,7 +978,6 @@ public class MusicService extends MediaBrowserServiceCompat {
                 Log.e(TAG, "startForeground should have been called, but song is null");
             }
         } catch (NullPointerException | ConcurrentModificationException e) {
-            Crashlytics.log("startForegroundImpl error: " + e.getMessage());
         }
     }
 
@@ -1144,7 +1109,7 @@ public class MusicService extends MediaBrowserServiceCompat {
                                 .subscribeOn(Schedulers.io())
                                 .subscribe(() -> {
                                     // Nothing to do
-                                }, error -> LogUtils.logException(TAG, "Error incrementing play count", error))
+                                }, error -> {})
                 );
             }
             scrobbleManager.scrobbleBroadcast(this, ScrobbleManager.ScrobbleStatus.COMPLETE, finishedSong);

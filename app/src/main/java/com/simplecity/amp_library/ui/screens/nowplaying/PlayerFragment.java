@@ -53,7 +53,6 @@ import com.simplecity.amp_library.rx.UnsafeConsumer;
 import com.simplecity.amp_library.ui.common.BaseFragment;
 import com.simplecity.amp_library.ui.dialog.ShareDialog;
 import com.simplecity.amp_library.ui.dialog.SongInfoDialog;
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog;
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay;
 import com.simplecity.amp_library.ui.screens.lyrics.LyricsDialog;
 import com.simplecity.amp_library.ui.screens.queue.pager.QueuePagerFragment;
@@ -66,7 +65,6 @@ import com.simplecity.amp_library.ui.views.ShuffleButton;
 import com.simplecity.amp_library.ui.views.SizableSeekBar;
 import com.simplecity.amp_library.ui.views.SnowfallView;
 import com.simplecity.amp_library.ui.views.multisheet.MultiSheetSlideEventRelay;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.PlaceholderProvider;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
@@ -318,7 +316,7 @@ public class PlayerFragment extends BaseFragment implements
                             isSeeking = false;
                         }
                     },
-                    error -> LogUtils.logException(TAG, "Error in seek change event", error))
+                    error -> {})
             );
 
             disposables.add(sharedSeekBarEvents
@@ -328,7 +326,7 @@ public class PlayerFragment extends BaseFragment implements
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             seekBarChangeEvent -> presenter.seekTo(seekBarChangeEvent.progress()),
-                            error -> LogUtils.logException(TAG, "Error receiving seekbar progress", error))
+                            error -> {})
             );
         }
 
@@ -337,7 +335,7 @@ public class PlayerFragment extends BaseFragment implements
                 .asObservable()
                 .subscribe(
                         aBoolean -> presenter.updateRemainingTime(),
-                        error -> LogUtils.logException(TAG, "Remaining time changed", error)
+                        error -> {}
                 )
         );
 
@@ -346,7 +344,7 @@ public class PlayerFragment extends BaseFragment implements
                         event -> {
                             if (event.nowPlayingExpanded()) {
                                 isExpanded = true;
-                                snowfallView.letItSnow(analyticsManager);
+                                snowfallView.letItSnow();
                             } else if (event.nowPlayingCollapsed()) {
                                 isExpanded = false;
                                 snowfallView.clear();
@@ -453,12 +451,12 @@ public class PlayerFragment extends BaseFragment implements
         if (song == null) return;
 
         if (isExpanded && !snowfallView.isSnowing()) {
-            snowfallView.letItSnow(analyticsManager);
+            snowfallView.letItSnow();
         } else {
             snowfallView.removeSnow();
         }
 
-        String totalTimeString = StringUtils.makeTimeString(getContext(), song.duration / 1000);
+        String totalTimeString = StringUtils.makeTimeString(requireContext(), song.duration / 1000);
         if (!TextUtils.isEmpty(totalTimeString)) {
             if (totalTime != null) {
                 totalTime.setText(totalTimeString);
@@ -577,11 +575,6 @@ public class PlayerFragment extends BaseFragment implements
     @Override
     public void showLyricsDialog() {
         LyricsDialog.Companion.newInstance().show(getChildFragmentManager());
-    }
-
-    @Override
-    public void showUpgradeDialog() {
-        UpgradeDialog.Companion.newInstance().show(getChildFragmentManager());
     }
 
     @Override

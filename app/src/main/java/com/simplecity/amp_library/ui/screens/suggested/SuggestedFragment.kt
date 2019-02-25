@@ -265,7 +265,6 @@ class SuggestedFragment :
             viewModels.add(favoriteRecyclerView)
 
             val songClickListener = SongClickListener(suggestedData.favoriteSongs)
-            analyticsManager.dropBreadcrumb(TAG, "favoriteRecyclerView.setItems()")
             favoriteRecyclerView.setItems(
                 suggestedData.favoriteSongs
                     .map { song ->

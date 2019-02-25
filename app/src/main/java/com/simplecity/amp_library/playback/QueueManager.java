@@ -10,7 +10,6 @@ import com.simplecity.amp_library.rx.UnsafeAction;
 import com.simplecity.amp_library.rx.UnsafeConsumer;
 import com.simplecity.amp_library.ui.screens.queue.QueueItem;
 import com.simplecity.amp_library.ui.screens.queue.QueueItemKt;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -448,7 +447,6 @@ public class QueueManager {
                 }, error -> {
                     queueReloading = false;
                     onComplete.invoke();
-                    LogUtils.logException(TAG, "Reloading queue", error);
                 });
     }
 

@@ -24,6 +24,4 @@ interface SearchView : SongMenuContract.View, AlbumMenuContract.View, AlbumArtis
     fun goToArtist(albumArtist: AlbumArtist, transitionView: View)
 
     fun goToAlbum(album: Album, transitionView: View)
-
-    fun showUpgradeDialog()
 }

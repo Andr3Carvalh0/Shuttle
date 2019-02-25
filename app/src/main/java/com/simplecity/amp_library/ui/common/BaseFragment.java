@@ -13,8 +13,7 @@ import com.simplecity.amp_library.ShuttleApplication;
 import com.simplecity.amp_library.playback.MediaManager;
 import com.simplecity.amp_library.ui.screens.drawer.NavigationEventRelay;
 import com.simplecity.amp_library.ui.views.multisheet.MultiSheetEventRelay;
-import com.simplecity.amp_library.utils.AnalyticsManager;
-import com.squareup.leakcanary.RefWatcher;
+
 import dagger.android.support.AndroidSupportInjection;
 import java.lang.reflect.Field;
 import javax.inject.Inject;
@@ -36,9 +35,6 @@ public abstract class BaseFragment extends BaseController {
     @Inject
     protected NavigationEventRelay navigationEventRelay;
 
-    @Inject
-    public AnalyticsManager analyticsManager;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
@@ -53,8 +49,6 @@ public abstract class BaseFragment extends BaseController {
     @Override
     public void onResume() {
         super.onResume();
-
-        analyticsManager.logScreenName(getActivity(), screenName());
     }
 
     @Override
@@ -109,10 +103,7 @@ public abstract class BaseFragment extends BaseController {
 
     @Override
     public void onDestroy() {
-
         super.onDestroy();
-        RefWatcher refWatcher = ((ShuttleApplication) getContext().getApplicationContext()).getRefWatcher();
-        refWatcher.watch(this);
     }
 
     public MediaManager getMediaManager() {

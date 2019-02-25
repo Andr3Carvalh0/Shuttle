@@ -19,20 +19,17 @@ import com.bignerdranch.expandablerecyclerview.model.Parent
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.simplecity.amp_library.R
-import com.simplecity.amp_library.billing.BillingManager
 import com.simplecity.amp_library.data.Repository
 import com.simplecity.amp_library.model.AlbumArtist
 import com.simplecity.amp_library.model.Playlist
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.ui.common.BaseFragment
-import com.simplecity.amp_library.ui.dialog.UpgradeDialog
 import com.simplecity.amp_library.ui.dialog.WeekSelectorDialog
 import com.simplecity.amp_library.ui.screens.nowplaying.PlayerPresenter
 import com.simplecity.amp_library.ui.screens.playlist.dialog.DeletePlaylistConfirmationDialog
 import com.simplecity.amp_library.ui.screens.playlist.dialog.M3uPlaylistDialog
 import com.simplecity.amp_library.ui.screens.playlist.dialog.RenamePlaylistDialog
 import com.simplecity.amp_library.ui.views.PlayerViewAdapter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.PlaceholderProvider
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.SleepTimer
@@ -67,8 +64,6 @@ class DrawerFragment : BaseFragment(), DrawerView, View.OnCreateContextMenuListe
     @Inject lateinit var playerPresenter: PlayerPresenter
 
     @Inject lateinit var drawerPresenter: DrawerPresenter
-
-    @Inject lateinit var billingManager: BillingManager
 
     @Inject lateinit var songsRepository: Repository.SongsRepository
 
@@ -165,7 +160,7 @@ class DrawerFragment : BaseFragment(), DrawerView, View.OnCreateContextMenuListe
                                 adapter.notifyParentChanged(i)
                             }
                         }
-                }, { throwable -> LogUtils.logException(TAG, "Error observing sleep time", throwable) })
+                }, { })
         )
 
         disposables.add(
@@ -180,7 +175,7 @@ class DrawerFragment : BaseFragment(), DrawerView, View.OnCreateContextMenuListe
                             }
                         }
                 },
-                    { throwable -> LogUtils.logException(TAG, "Error observing sleep state", throwable) })
+                    { })
         )
 
         drawerParents!!
@@ -306,10 +301,6 @@ class DrawerFragment : BaseFragment(), DrawerView, View.OnCreateContextMenuListe
                     }
                 }
             }
-    }
-
-    override fun showUpgradeDialog() {
-        UpgradeDialog().show(childFragmentManager)
     }
 
     // PlaylistMenuContract.View Implementation

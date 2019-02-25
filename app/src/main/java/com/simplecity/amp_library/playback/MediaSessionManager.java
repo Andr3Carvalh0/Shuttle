@@ -28,7 +28,6 @@ import com.simplecity.amp_library.model.Song;
 import com.simplecity.amp_library.playback.constants.InternalIntents;
 import com.simplecity.amp_library.ui.screens.queue.QueueItem;
 import com.simplecity.amp_library.ui.screens.queue.QueueItemKt;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.MediaButtonIntentReceiver;
 import com.simplecity.amp_library.utils.SettingsManager;
 import io.reactivex.Completable;
@@ -158,7 +157,7 @@ class MediaSessionManager {
                                             playbackManager.pause(false);
                                         }
                                     },
-                                    error -> LogUtils.logException(TAG, "Failed to gather songs from search. Query: " + query, error)
+                                    error -> {}
                             );
                 }
             }

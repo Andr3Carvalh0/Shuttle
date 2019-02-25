@@ -45,7 +45,6 @@ import com.simplecity.amp_library.ui.settings.SettingsParentFragment;
 import com.simplecity.amp_library.ui.views.multisheet.CustomMultiSheetView;
 import com.simplecity.amp_library.ui.views.multisheet.MultiSheetEventRelay;
 import com.simplecity.amp_library.ui.views.multisheet.MultiSheetSlideEventRelay;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.SleepTimer;
 import com.simplecity.multisheetview.ui.view.MultiSheetView;
@@ -296,9 +295,7 @@ public class MainController extends BaseNavigationController implements BackPres
             for (Pair<View, String> pair : sharedElements) {
                 try {
                     fragmentTransaction.addSharedElement(pair.first, pair.second);
-                } catch (IllegalArgumentException e) {
-                    LogUtils.logException(TAG, String.format("Error adding shared element transition.. key: %s, value: %s", pair.first, pair.second), e);
-                }
+                } catch (IllegalArgumentException e) { }
             }
         }
 

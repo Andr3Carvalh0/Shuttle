@@ -55,7 +55,6 @@ import com.simplecity.amp_library.ui.views.ContextualToolbar;
 import com.simplecity.amp_library.ui.views.ContextualToolbarHost;
 import com.simplecity.amp_library.ui.views.RatingSnackbar;
 import com.simplecity.amp_library.ui.views.multisheet.MultiSheetEventRelay;
-import com.simplecity.amp_library.utils.AnalyticsManager;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
 import com.simplecity.multisheetview.ui.view.MultiSheetView;
@@ -106,9 +105,6 @@ public class LibraryController extends BaseFragment implements
 
     @Inject
     MultiSheetEventRelay multiSheetEventRelay;
-
-    @Inject
-    AnalyticsManager analyticsManager;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -248,7 +244,7 @@ public class LibraryController extends BaseFragment implements
 
         pager.postDelayed(() -> {
             if (pager != null) {
-                new RatingSnackbar(settingsManager, analyticsManager).show(pager, () -> {
+                new RatingSnackbar(settingsManager).show(pager, () -> {
                     ShuttleUtils.openShuttleLink(getActivity(), getActivity().getPackageName(), getActivity().getPackageManager());
                     return Unit.INSTANCE;
                 });

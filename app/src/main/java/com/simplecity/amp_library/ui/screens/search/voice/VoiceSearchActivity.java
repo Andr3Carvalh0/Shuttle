@@ -12,7 +12,6 @@ import com.simplecity.amp_library.playback.MediaManager;
 import com.simplecity.amp_library.ui.common.BaseActivity;
 import com.simplecity.amp_library.ui.screens.main.MainActivity;
 import com.simplecity.amp_library.utils.ComparisonUtils;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.extensions.AlbumExtKt;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
@@ -145,7 +144,6 @@ public class VoiceSearchActivity extends BaseActivity {
                     }
                     finish();
                 }, error -> {
-                    LogUtils.logException(TAG, "Error attempting to playAll()", error);
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 });

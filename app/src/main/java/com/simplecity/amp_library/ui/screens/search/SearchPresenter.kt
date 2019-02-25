@@ -15,7 +15,6 @@ import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuContract
 import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuPresenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.StringUtils
 import io.reactivex.Single
@@ -118,7 +117,7 @@ constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             { searchView.setData(it) },
-                            { error -> LogUtils.logException(TAG, "Error refreshing adapter", error) }
+                            { }
                     )
 
             addDisposable(performSearchSubscription!!)
@@ -268,7 +267,7 @@ constructor(
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 { items -> dst(items) },
-                                { error -> LogUtils.logException(SearchPresenter.TAG, "Failed to transform src single", error) }
+                                { }
                         )
         )
     }

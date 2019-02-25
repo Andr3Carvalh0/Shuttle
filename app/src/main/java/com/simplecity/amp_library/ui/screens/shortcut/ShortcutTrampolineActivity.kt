@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import com.simplecity.amp_library.playback.MusicService
 import com.simplecity.amp_library.playback.constants.ShortcutCommands
 import com.simplecity.amp_library.ui.screens.main.MainActivity
-import com.simplecity.amp_library.utils.AnalyticsManager
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.ResumingServiceManager
 import com.simplecity.amp_library.utils.playlists.FavoritesPlaylistManager
 import com.simplecity.amp_library.utils.playlists.PlaylistManager
@@ -20,8 +18,6 @@ class ShortcutTrampolineActivity : AppCompatActivity() {
 
     @Inject lateinit var favoritesPlaylistManager: FavoritesPlaylistManager
 
-    @Inject lateinit var analyticsManager: AnalyticsManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -31,7 +27,7 @@ class ShortcutTrampolineActivity : AppCompatActivity() {
             ShortcutCommands.PLAY, ShortcutCommands.SHUFFLE_ALL -> {
                 val intent = Intent(this, MusicService::class.java)
                 intent.action = action
-                ResumingServiceManager(lifecycle, analyticsManager).startService(this, intent, null)
+                ResumingServiceManager(lifecycle).startService(this, intent, null)
                 finish()
             }
             ShortcutCommands.FOLDERS -> {
@@ -52,7 +48,7 @@ class ShortcutTrampolineActivity : AppCompatActivity() {
                                     startActivity(intent)
                                     finish()
                                 },
-                                { error -> LogUtils.logException(TAG, "Error starting activity", error) }
+                                { }
                         )
             }
         }

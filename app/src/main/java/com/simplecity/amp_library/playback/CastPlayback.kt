@@ -22,7 +22,6 @@ import com.simplecity.amp_library.glide.utils.GlideUtils
 import com.simplecity.amp_library.http.HttpServer
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.playback.Playback.Callbacks
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.ShuttleUtils
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -144,7 +143,7 @@ class CastPlayback(context: Context, castSession: CastSession) : Playback {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             performLoad()
-                        }, { error -> LogUtils.logException(TAG, "Failed to load error drawable", error) })
+                        }, { })
                 }
             })
     }
@@ -172,7 +171,6 @@ class CastPlayback(context: Context, castSession: CastSession) : Playback {
                 } ?: Log.e(TAG, "Seek failed, no remote media session")
             }
         } catch (e: JSONException) {
-            LogUtils.logException(TAG, "Exception pausing cast playback", e)
             if (callbacks != null) {
                 callbacks?.onError(this, e.message ?: "Unspecified error")
             }
@@ -189,7 +187,6 @@ class CastPlayback(context: Context, castSession: CastSession) : Playback {
                 Log.e(TAG, "Pause failed, no remote media session")
             }
         } catch (e: JSONException) {
-            LogUtils.logException(TAG, "Exception pausing cast playback", e)
             callbacks?.onError(this, e.message ?: "Unspecified error")
         }
     }

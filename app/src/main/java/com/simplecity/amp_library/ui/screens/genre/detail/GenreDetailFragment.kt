@@ -519,7 +519,6 @@ class GenreDetailFragment :
             val items = ArrayList<ViewModel<*>>()
 
             setHorizontalItemsDisposable?.dispose()
-            analyticsManager.dropBreadcrumb(TAG, "horizontalRecyclerView.setItems()")
             setHorizontalItemsDisposable = horizontalRecyclerView.setItems(albums
                 .map { album ->
                     val horizontalAlbumView = HorizontalAlbumView(album, requestManager, sortManager, settingsManager)

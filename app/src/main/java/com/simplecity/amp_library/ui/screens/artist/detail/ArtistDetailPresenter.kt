@@ -13,7 +13,6 @@ import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuContract
 import com.simplecity.amp_library.ui.screens.album.menu.AlbumMenuPresenter
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuContract
 import com.simplecity.amp_library.ui.screens.songs.menu.SongMenuPresenter
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.sorting.SortManager
 import com.squareup.inject.assisted.Assisted
@@ -124,8 +123,7 @@ class ArtistDetailPresenter @AssistedInject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { items -> dst(items) },
-                    { error -> LogUtils.logException(SongMenuPresenter.TAG, "Failed to transform src single", error) }
+                    { items -> dst(items) }, {  }
                 )
         )
     }

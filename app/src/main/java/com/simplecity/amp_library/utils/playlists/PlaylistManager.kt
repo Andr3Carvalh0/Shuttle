@@ -14,7 +14,6 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.crashlytics.android.Crashlytics
 import com.simplecity.amp_library.R
 import com.simplecity.amp_library.data.SongsRepository
 import com.simplecity.amp_library.interfaces.FileType
@@ -24,7 +23,6 @@ import com.simplecity.amp_library.model.Query
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.sql.SqlUtils
 import com.simplecity.amp_library.sql.providers.PlayCountTable
-import com.simplecity.amp_library.utils.LogUtils
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import io.reactivex.Single
@@ -135,7 +133,7 @@ class PlaylistManager @Inject constructor(
                         insertPlaylistItems(playlist, mutableSongList, existingSongs.size, callback)
                     }
                 },
-                { error -> LogUtils.logException(TAG, "PlaylistManager: Error determining existing songs", error) }
+                { }
             )
     }
 
@@ -199,9 +197,7 @@ class PlaylistManager @Inject constructor(
                         if (uri != null) {
                             id = java.lang.Long.parseLong(uri.lastPathSegment!!)
                         }
-                    } catch (e: NullPointerException) {
-                        Crashlytics.log("Failed to create playlist: " + e.message)
-                    }
+                    } catch (e: NullPointerException) { }
 
                 }
             }
@@ -209,8 +205,6 @@ class PlaylistManager @Inject constructor(
 
         if (id != -1L) {
             playlist = Playlist(Playlist.Type.USER_CREATED, id, name, true, false, true, true, true)
-        } else {
-            Crashlytics.log(String.format("Failed to create playlist. Name: %s, id: %d", name, id))
         }
 
         return playlist
@@ -230,7 +224,7 @@ class PlaylistManager @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { numTracksRemoved -> callback?.invoke(numTracksRemoved > 0) },
-                { error -> LogUtils.logException(TAG, "PlaylistManager: Error Removing from favorites", error) }
+                { }
             )
     }
 
@@ -254,7 +248,7 @@ class PlaylistManager @Inject constructor(
                     }
                     addToPlaylist(playlist, songs, callback)
                 },
-                { error -> LogUtils.logException(TAG, "Error getting songs for file object", error) }
+                { }
             )
     }
 

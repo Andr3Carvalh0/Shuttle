@@ -14,11 +14,9 @@ import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.ShuttleApplication;
-import com.simplecity.amp_library.billing.BillingManager;
 import com.simplecity.amp_library.model.CategoryItem;
 import com.simplecity.amp_library.services.ArtworkDownloadService;
-import com.simplecity.amp_library.ui.common.PurchasePresenter;
-import com.simplecity.amp_library.utils.AnalyticsManager;
+import com.simplecity.amp_library.ui.common.Presenter;
 import com.simplecity.amp_library.utils.ColorPalette;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.ShuttleUtils;
@@ -27,44 +25,30 @@ import io.reactivex.schedulers.Schedulers;
 import java.util.List;
 import javax.inject.Inject;
 
-public class SettingsPresenter extends PurchasePresenter<SettingsView> {
+public class SettingsPresenter extends Presenter<SettingsView> {
 
     private ShuttleApplication application;
-    private BillingManager billingManager;
-    private AnalyticsManager analyticsManager;
     private SettingsManager settingsManager;
 
     @Inject
     public SettingsPresenter(
             ShuttleApplication application,
-            BillingManager billingManager,
-            AnalyticsManager analyticsManager,
-            SettingsManager settingsManager
-    ) {
+            SettingsManager settingsManager) {
 
         super();
 
         this.application = application;
-        this.billingManager = billingManager;
-        this.analyticsManager = analyticsManager;
         this.settingsManager = settingsManager;
     }
 
     // Support Preferences
 
     void changelogClicked() {
-        analyticsManager.logChangelogViewed();
-
         SettingsView settingsView = getView();
         if (settingsView != null) {
             settingsView.showChangelog();
         }
     }
-
-    public void restorePurchasesClicked() {
-        billingManager.restorePurchases();
-    }
-
     // Display
 
     public void chooseTabsClicked() {

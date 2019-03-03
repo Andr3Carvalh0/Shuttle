@@ -33,6 +33,8 @@ import com.simplecity.amp_library.utils.StringUtils;
 import com.simplecity.amp_library.utils.extensions.GenreExtKt;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
+import hu.akarnokd.rxjava2.debug.RxJavaAssemblyTracking;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -78,7 +80,6 @@ public class ShuttleApplication extends DaggerApplication {
         DaggerAppComponent.builder()
                 .create(this)
                 .inject(this);
-
 
         InputMethodManagerLeaks.fixFocusedViewLeak(this);
 

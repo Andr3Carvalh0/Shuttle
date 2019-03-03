@@ -200,6 +200,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public IBinder onBind(final Intent intent) {
+
         cancelShutdown();
         serviceInUse = true;
 
@@ -280,13 +281,16 @@ public class MusicService extends MediaBrowserServiceCompat {
         //  playbackManager.willResumePlayback() returns true even after we've manually paused.
         //  This means we don't call stopSelf(), which in turn causes the service to act as if it has crashed, and will recreate itself unnecessarily.
 
-        if (!isPlaying() && !playbackManager.willResumePlayback()) { stopSelf(); }
+        if (!isPlaying() && !playbackManager.willResumePlayback()) {
+            stopSelf();
+        }
 
         super.onTaskRemoved(rootIntent);
     }
 
     @Override
     public void onDestroy() {
+
         saveState(true);
 
         //Shutdown the EQ
@@ -890,8 +894,6 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     private void scheduleDelayedShutdown() {
         if (isPlaying() || serviceInUse || playbackManager.willResumePlayback()) {
-                    String.format("scheduleDelayedShutdown called.. returning early. isPlaying: %s service in use: %s will resume playback: %s",
-                            isPlaying(), serviceInUse, playbackManager.willResumePlayback());
             return;
         }
 
@@ -977,8 +979,7 @@ public class MusicService extends MediaBrowserServiceCompat {
             } else {
                 Log.e(TAG, "startForeground should have been called, but song is null");
             }
-        } catch (NullPointerException | ConcurrentModificationException e) {
-        }
+        } catch (NullPointerException | ConcurrentModificationException e) { }
     }
 
     /**

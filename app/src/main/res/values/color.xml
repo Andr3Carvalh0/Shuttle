@@ -28,7 +28,9 @@
     <drawable name="notification_template_icon_bg">#3333B5E5</drawable>
 
     <color name="primary_text_dark">#ffffff</color>
-    
+
+    <color name="ic_launcher_background">#FFFFFF</color>
+
     <color name="text_highlight">#6680cbc4</color>
 
     <color name="pa_primaryColor">#2D2D2D</color>

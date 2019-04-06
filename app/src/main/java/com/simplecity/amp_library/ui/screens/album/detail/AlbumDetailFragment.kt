@@ -52,6 +52,7 @@ import com.simplecity.amp_library.utils.ContextualToolbarHelper
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.PlaceholderProvider
 import com.simplecity.amp_library.utils.ResourceUtils
+import com.simplecity.amp_library.utils.RingtoneManager
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import com.simplecity.amp_library.utils.StringUtils
@@ -526,6 +527,14 @@ class AlbumDetailFragment :
         song.share(context!!)
     }
 
+    override fun presentRingtonePermissionDialog() {
+        RingtoneManager.getDialog(context!!).show()
+    }
+
+    override fun showRingtoneSetMessage() {
+        Toast.makeText(context, R.string.ringtone_set_new, Toast.LENGTH_SHORT).show()
+    }
+
     // BaseFragment Implementation
 
     public override fun screenName(): String {
@@ -538,7 +547,7 @@ class AlbumDetailFragment :
 
         private const val ARG_ALBUM = "album"
 
-        fun newInstance(album: Album, transitionName: String): AlbumDetailFragment {
+        fun newInstance(album: Album, transitionName: String?): AlbumDetailFragment {
             val args = Bundle()
             val fragment = AlbumDetailFragment()
             args.putSerializable(ARG_ALBUM, album)

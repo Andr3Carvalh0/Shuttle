@@ -77,4 +77,12 @@ abstract class PlayerViewAdapter : PlayerView {
     override fun shareSong(song: Song) {
 
     }
+
+    override fun presentRingtonePermissionDialog() {
+
+    }
+
+    override fun showRingtoneSetMessage() {
+
+    }
 }

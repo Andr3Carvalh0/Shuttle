@@ -63,6 +63,7 @@ import com.simplecity.amp_library.utils.ContextualToolbarHelper
 import com.simplecity.amp_library.utils.Operators
 import com.simplecity.amp_library.utils.PlaceholderProvider
 import com.simplecity.amp_library.utils.ResourceUtils
+import com.simplecity.amp_library.utils.RingtoneManager
 import com.simplecity.amp_library.utils.SettingsManager
 import com.simplecity.amp_library.utils.ShuttleUtils
 import com.simplecity.amp_library.utils.StringUtils
@@ -649,6 +650,14 @@ class ArtistDetailFragment :
         song.share(context!!)
     }
 
+    override fun presentRingtonePermissionDialog() {
+        RingtoneManager.getDialog(context!!).show()
+    }
+
+    override fun showRingtoneSetMessage() {
+        Toast.makeText(context, R.string.ringtone_set_new, Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
 
         private const val TAG = "ArtistDetailFragment"
@@ -657,7 +666,7 @@ class ArtistDetailFragment :
 
         private const val ARG_ALBUM_ARTIST = "album_artist"
 
-        fun newInstance(albumArtist: AlbumArtist, transitionName: String): ArtistDetailFragment {
+        fun newInstance(albumArtist: AlbumArtist, transitionName: String?): ArtistDetailFragment {
             val args = Bundle()
             val fragment = ArtistDetailFragment()
             args.putSerializable(ARG_ALBUM_ARTIST, albumArtist)

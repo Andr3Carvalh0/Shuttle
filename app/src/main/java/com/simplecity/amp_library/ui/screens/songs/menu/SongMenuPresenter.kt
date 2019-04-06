@@ -64,7 +64,11 @@ open class SongMenuPresenter @Inject constructor(
     }
 
     override fun setRingtone(song: Song) {
-        ringtoneManager.setRingtone(song)
+        if (RingtoneManager.requiresDialog(context)) {
+            view?.presentRingtonePermissionDialog()
+        } else {
+            ringtoneManager.setRingtone(song) { view?.showRingtoneSetMessage() }
+        }
     }
 
     override fun share(song: Song) {

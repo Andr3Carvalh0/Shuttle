@@ -450,6 +450,14 @@ class QueueFragment :
         song.share(context!!)
     }
 
+    override fun presentRingtonePermissionDialog() {
+        RingtoneManager.getDialog(context!!).show()
+    }
+
+    override fun showRingtoneSetMessage() {
+        Toast.makeText(context, R.string.ringtone_set_new, Toast.LENGTH_SHORT).show()
+    }
+
 
     // Static
 

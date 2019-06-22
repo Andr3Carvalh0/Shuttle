@@ -32,7 +32,8 @@
     <string name="repeat_all_notif">Repetint totes les cançons.</string>
     <!-- Individual song context menu item -->
     <string name="ringtone_menu">Utilitzar com a to de trucada</string>
-    <!-- Toast after setting a song as phone ringtone.-->
+    <!-- Toast after setting a song as phone ringtone -->
+    <string name="ringtone_set">"\"<xliff:g example="Alarm Bell" id="name">%s</xliff:g>\"  definit com a to de trucada. "</string>
     <!-- Toast if setting ringtone fails -->
     <!-- Toasts after adding song(s) to playlists -->
     <plurals name="NNNtrackstoplaylist">
@@ -173,7 +174,7 @@ cançons afegides a la cua.</item>
     <string name="fav_title">Favorits</string>
     <!-- -->
     <string name="library_title">Biblioteca</string>
-    <!-- Lock Queue -->
+    <!-- -->
     <!-- Library screen, menu item -->
     <string name="search_title">Cercar</string>
     <!-- Playlist context menu item to clear the selected playlist. -->
@@ -261,10 +262,6 @@ cançons afegides a la cua.</item>
     <string name="pref_title_ignore_folder_art">Ignorar les caràtules dins les carpetes</string>
     <!-- Settings summary for the embedded artwork checkbox-->
     <string name="pref_summary_ignore_folder_art">No cercar caràtules dins dels directoris de música</string>
-    <!-- Settings title for ignore folder artwork checkbox (whether the app can use local artwork for the album art -->
-    <string name="pref_title_prefer_lastfm">Preferir caràtules de Last.fm</string>
-    <!-- Settings summary for the embedded artwork checkbox-->
-    <string name="pref_summary_prefer_lastfm">Marca aquesta casella si preferiries que Shuttle cerqués caràtules primer a Last.fm, abans de fer-ho en els servidors de iTunes. (Només per caràtules d\'àlbums)</string>
     <!-- Settings title for Artwork settings heading -->
     <string name="pref_string_title_artwork">Caràtules</string>
     <!-- Settings title for the download artwork button -->

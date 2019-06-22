@@ -1,2 +1,0 @@
-- Fixed issue preventing Last.FM artwork from downloading
-- Fixed an issue where current song / queue position was messed up after turning shuffle on

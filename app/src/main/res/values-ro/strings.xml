@@ -32,7 +32,8 @@
     <string name="repeat_all_notif">Se repetă toate piesele.</string>
     <!-- Individual song context menu item -->
     <string name="ringtone_menu">Folosește ca ton de apel</string>
-    <!-- Toast after setting a song as phone ringtone.-->
+    <!-- Toast after setting a song as phone ringtone -->
+    <string name="ringtone_set">„<xliff:g example="Alarm Bell" id="name">%s</xliff:g>” setat ca ton de apel.</string>
     <!-- Toast if setting ringtone fails -->
     <!-- Toasts after adding song(s) to playlists -->
     <plurals name="NNNtrackstoplaylist">
@@ -178,7 +179,7 @@
     <string name="fav_title">Favorite</string>
     <!-- -->
     <string name="library_title">Bibliotecă</string>
-    <!-- Lock Queue -->
+    <!-- -->
     <!-- Library screen, menu item -->
     <string name="search_title">Caută</string>
     <!-- Playlist context menu item to clear the selected playlist. -->
@@ -266,10 +267,6 @@
     <string name="pref_title_ignore_folder_art">Ignoră coperțile din foldere</string>
     <!-- Settings summary for the embedded artwork checkbox-->
     <string name="pref_summary_ignore_folder_art">Nu căuta coperți stocate în directoarele tale de muzică</string>
-    <!-- Settings title for ignore folder artwork checkbox (whether the app can use local artwork for the album art -->
-    <string name="pref_title_prefer_lastfm">Alege coperți de pe Last.fm</string>
-    <!-- Settings summary for the embedded artwork checkbox-->
-    <string name="pref_summary_prefer_lastfm">Bifează această căsuță dacă preferi ca Shuttle să caute coperți pe Last.fm înainte de a căuta în serverele iTunes. (Doar pentru coperți de album)</string>
     <!-- Settings title for Artwork settings heading -->
     <string name="pref_string_title_artwork">Copertă</string>
     <!-- Settings title for the download artwork button -->

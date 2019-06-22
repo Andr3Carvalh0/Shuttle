@@ -19,13 +19,13 @@ buildscript {
 
 
 plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("kotlin-kapt")
     id("com.github.triplet.play") version "2.1.0"
 }
 
-apply plugin: Dependencies.BuildPlugins.androidApplication
-apply plugin: Dependencies.BuildPlugins.kotlin
-apply plugin: Dependencies.BuildPlugins.kotlinAndroidExtensions
-apply plugin: Dependencies.BuildPlugins.kapt
 apply plugin: Dependencies.BuildPlugins.dexCount
 apply plugin: Dependencies.BuildPlugins.fabric
 
@@ -72,6 +72,8 @@ android {
 
         // This API key is provided for convenience. Please go to https://www.last.fm/api/account/create and create your own.
         buildConfigField("String", "LASTFM_API_KEY", "\"${getProperty(getProperties('../public.properties'), 'LASTFM_API_KEY')}\"")
+
+        manifestPlaceholders = [CRASHLYTICS_API_KEY: "dummy-key"]
     }
 
     signingConfigs {
@@ -87,14 +89,8 @@ android {
     buildTypes {
 
         debug {
-            minifyEnabled true
-            shrinkResources true
-
-            // For further optimisation, use 'proguard-android-optimize.txt' instead of 'proguard-android.txt'.
-            // Last time I checked, it reduced by another ~5000 methods.
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-rules.pro')
-
-            buildConfigField("String", "LASTFM_API_KEY", "\"${getProperty(getProperties('../private.properties'), 'LASTFM_API_KEY')}\"")
+            applicationIdSuffix ".debug"
+            ext.enableCrashlytics = false
         }
 
         release {
@@ -108,6 +104,7 @@ android {
             signingConfig signingConfigs.release
 
             buildConfigField("String", "LASTFM_API_KEY", "\"${getProperty(getProperties('../private.properties'), 'LASTFM_API_KEY')}\"")
+            manifestPlaceholders = [CRASHLYTICS_API_KEY: "${getProperty(getProperties('../private.properties'), 'CRASHLYTICS_API_KEY')}"]
         }
     }
 
@@ -158,6 +155,7 @@ android {
 
             applicationId "com.simplecity.amp_pro"
 
+            resConfigs "en", "xxhdpi"
         }
 
         paid {
@@ -217,6 +215,7 @@ dependencies {
 
     // Kotlin
     implementation Dependencies.kotlin
+//    implementation Dependencies.ktx
 
     // Google libs
     implementation Dependencies.Google.cardView
@@ -237,6 +236,9 @@ dependencies {
     implementation Dependencies.Square.retrofit
     implementation Dependencies.Square.retrofitGson
     implementation Dependencies.Square.sqlBrite
+    debugImplementation Dependencies.Square.haha
+    debugImplementation Dependencies.Square.leakCanaryDebug
+    releaseImplementation Dependencies.Square.leakCanaryRel
 
     // Projects
     implementation project(Dependencies.Projects.navigation)
@@ -251,7 +253,6 @@ dependencies {
     implementation Dependencies.Rx.rxBindingAppCompat
     implementation Dependencies.Rx.rxImagePicker
     implementation Dependencies.Rx.rxJava
-    implementation Dependencies.Rx.rxJavaExtensions
     implementation Dependencies.Rx.rxRelay
     implementation Dependencies.Rx.rxBroadcast
     implementation Dependencies.Rx.rxPrefs
@@ -268,6 +269,7 @@ dependencies {
     implementation Dependencies.materialDialogs
     implementation Dependencies.materialDialogCommons
     implementation Dependencies.expandableRecyclerView
+    implementation Dependencies.billing
 
     implementation Dependencies.butterknife
     kapt Dependencies.butterknifeAnnotationProcessor
@@ -279,6 +281,10 @@ dependencies {
 
     compileOnly Dependencies.daggerAssistedInject
     kapt Dependencies.daggerAssistedInjectProcessor
+
+    implementation(Dependencies.crashlytics) {
+        transitive = true
+    }
 
     // Testing
     testImplementation Dependencies.Testing.junit

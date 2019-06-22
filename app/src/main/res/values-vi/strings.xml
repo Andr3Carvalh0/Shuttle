@@ -32,7 +32,8 @@
     <string name="repeat_all_notif">Lặp lại tất cả bài hát</string>
     <!-- Individual song context menu item -->
     <string name="ringtone_menu">Dùng làm nhạc chuông</string>
-    <!-- Toast after setting a song as phone ringtone.-->
+    <!-- Toast after setting a song as phone ringtone -->
+    <string name="ringtone_set">\"<xliff:g example="Alarm Bell" id="name">%s</xliff:g>\" được đặt làm nhạc chuông.</string>
     <!-- Toast if setting ringtone fails -->
     <string name="ringtone_set_failed">Không thể đặt làm nhạc chuông</string>
     <!-- Toasts after adding song(s) to playlists -->
@@ -190,7 +191,7 @@
     <string name="fav_title">Yêu thích</string>
     <!-- -->
     <string name="library_title">Thư viện</string>
-    <!-- Lock Queue -->
+    <!-- -->
     <!-- Library screen, menu item -->
     <string name="search_title">Tìm kiếm</string>
     <string name="search_filter">Lọc</string>
@@ -285,10 +286,6 @@
     <string name="pref_title_ignore_folder_art">Bỏ qua ảnh bìa thư mục</string>
     <!-- Settings summary for the embedded artwork checkbox-->
     <string name="pref_summary_ignore_folder_art">Không tìm ảnh bìa chứa trong thư mục nhạc</string>
-    <!-- Settings title for ignore folder artwork checkbox (whether the app can use local artwork for the album art -->
-    <string name="pref_title_prefer_lastfm">Ưu tiên ảnh bìa Last.fm</string>
-    <!-- Settings summary for the embedded artwork checkbox-->
-    <string name="pref_summary_prefer_lastfm">Chọn mục này nếu bạn muốn Shuttle tìm ảnh bìa từ Last.fm trước khi tìm trong máy chủ iTunes. (Chỉ ảnh bìa album)</string>
     <!-- Settings title for Artwork settings heading -->
     <string name="pref_string_title_artwork">Ảnh bìa</string>
     <!-- Settings title for the download artwork button -->
@@ -683,8 +680,6 @@
     <string name="artwork_edit">Chọn ảnh bìa</string>
     <string name="artwork_type_media_store">Bộ nhớ đa phương tiện</string>
     <string name="artwork_type_tag">Thẻ</string>
-    <string name="artwork_type_lastfm">Last.FM</string>
-    <string name="artwork_type_itunes">iTunes</string>
     <string name="artwork_type_custom">Tuỳ biến</string>
     <string name="artwork_gallery">Bộ sưu tập</string>
     <!-- Launcher Shortcuts -->

@@ -58,7 +58,8 @@ class DummyNotificationHelper {
 
                 if (!isForegroundedByApp) {
                     service.startForeground(NOTIFICATION_ID_DUMMY, notification);
-                } 
+                }
+
                 isShowingDummyNotification = true;
             }
         }
@@ -70,6 +71,7 @@ class DummyNotificationHelper {
     }
 
     void teardown(Service service) {
+
         removeDummyNotification(service);
 
         if (dummyNotificationDisposable != null) {
@@ -88,6 +90,7 @@ class DummyNotificationHelper {
                 if (!isForegroundedByApp) {
                     service.stopForeground(true);
                 }
+
                 NotificationManager notificationManager = service.getSystemService(NotificationManager.class);
                 notificationManager.cancel(NOTIFICATION_ID_DUMMY);
 

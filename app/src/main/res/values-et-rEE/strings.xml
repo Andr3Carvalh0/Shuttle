@@ -32,7 +32,8 @@
     <string name="repeat_all_notif">Korda kõiki laule</string>
     <!-- Individual song context menu item -->
     <string name="ringtone_menu">Kasuta helinana</string>
-    <!-- Toast after setting a song as phone ringtone.-->
+    <!-- Toast after setting a song as phone ringtone -->
+    <string name="ringtone_set">\"<xliff:g example="Alarm Bell" id="name">%s</xliff:g>\" seatud mobiili helinaks.</string>
     <!-- Toast if setting ringtone fails -->
     <string name="ringtone_set_failed">Ei saanud helinat muuta</string>
     <!-- Toasts after adding song(s) to playlists -->
@@ -195,7 +196,7 @@
     <string name="fav_title">Lemmikud</string>
     <!-- -->
     <string name="library_title">Kogu</string>
-    <!-- Lock Queue -->
+    <!-- -->
     <!-- Library screen, menu item -->
     <string name="search_title">Otsi</string>
     <string name="search_filter">Filtrid</string>
@@ -291,10 +292,6 @@
     <string name="pref_title_ignore_folder_art">Ignoreeri kaanepilte kaustas</string>
     <!-- Settings summary for the embedded artwork checkbox-->
     <string name="pref_summary_ignore_folder_art">Ära otsi kaanepilte oma muusika kaustadest</string>
-    <!-- Settings title for ignore folder artwork checkbox (whether the app can use local artwork for the album art -->
-    <string name="pref_title_prefer_lastfm">Eelista Last.fm pilte</string>
-    <!-- Settings summary for the embedded artwork checkbox-->
-    <string name="pref_summary_prefer_lastfm">Märgi see valik, kui soovid, et Shuttle otsiks kaanepilte esmalt teenusest Last.fm ning seejärel iTunes serveritest. (Ainult albumite kaanepildid)</string>
     <!-- Settings title for Artwork settings heading -->
     <string name="pref_string_title_artwork">Albumi kujundus</string>
     <!-- Settings title for the download artwork button -->
@@ -699,8 +696,6 @@ Kui see on välja lülitatud, siis kasutatakse Shuttle ikooni kohatäitena.</str
     <string name="artwork_edit">Vali kaanepilt</string>
     <string name="artwork_type_media_store">Failide asukoht</string>
     <string name="artwork_type_tag">Silt</string>
-    <string name="artwork_type_lastfm">Last.FM</string>
-    <string name="artwork_type_itunes">iTunes</string>
     <string name="artwork_type_custom">Kohandatud</string>
     <string name="artwork_gallery">Galerii</string>
     <!-- Launcher Shortcuts -->

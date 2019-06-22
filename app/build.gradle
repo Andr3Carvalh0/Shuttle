@@ -215,7 +215,6 @@ dependencies {
 
     // Kotlin
     implementation Dependencies.kotlin
-//    implementation Dependencies.ktx
 
     // Google libs
     implementation Dependencies.Google.cardView
@@ -237,8 +236,6 @@ dependencies {
     implementation Dependencies.Square.retrofitGson
     implementation Dependencies.Square.sqlBrite
     debugImplementation Dependencies.Square.haha
-    debugImplementation Dependencies.Square.leakCanaryDebug
-    releaseImplementation Dependencies.Square.leakCanaryRel
 
     // Projects
     implementation project(Dependencies.Projects.navigation)
@@ -281,10 +278,6 @@ dependencies {
 
     compileOnly Dependencies.daggerAssistedInject
     kapt Dependencies.daggerAssistedInjectProcessor
-
-    implementation(Dependencies.crashlytics) {
-        transitive = true
-    }
 
     // Testing
     testImplementation Dependencies.Testing.junit

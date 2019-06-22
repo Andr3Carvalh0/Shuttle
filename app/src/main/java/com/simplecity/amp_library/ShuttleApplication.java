@@ -16,11 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.core.CrashlyticsCore;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.simplecity.amp_library.data.Repository;
 import com.simplecity.amp_library.di.app.DaggerAppComponent;
 import com.simplecity.amp_library.model.Genre;
@@ -30,18 +25,12 @@ import com.simplecity.amp_library.sql.SqlUtils;
 import com.simplecity.amp_library.sql.databases.CustomArtworkTable;
 import com.simplecity.amp_library.sql.providers.PlayCountTable;
 import com.simplecity.amp_library.sql.sqlbrite.SqlBriteUtils;
-import com.simplecity.amp_library.utils.AnalyticsManager;
-import com.simplecity.amp_library.utils.InputMethodManagerLeaks;
 import com.simplecity.amp_library.utils.LegacyUtils;
-import com.simplecity.amp_library.utils.LogUtils;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.StringUtils;
 import com.simplecity.amp_library.utils.extensions.GenreExtKt;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import io.fabric.sdk.android.Fabric;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -69,9 +58,6 @@ public class ShuttleApplication extends DaggerApplication {
 
     private static final String TAG = "ShuttleApplication";
 
-    private boolean isUpgraded;
-
-    private RefWatcher refWatcher;
 
     public HashMap<String, UserSelectedArtwork> userSelectedArtwork = new HashMap<>();
 
@@ -80,9 +66,6 @@ public class ShuttleApplication extends DaggerApplication {
 
     @Inject
     Repository.SongsRepository songsRepository;
-
-    @Inject
-    AnalyticsManager analyticsManager;
 
     @Inject
     SettingsManager settingsManager;
@@ -95,34 +78,6 @@ public class ShuttleApplication extends DaggerApplication {
                 .create(this)
                 .inject(this);
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-
-        if (BuildConfig.DEBUG) {
-            // enableStrictMode();
-        }
-
-        refWatcher = LeakCanary.install(this);
-        // workaround to fix InputMethodManager leak as suggested by LeakCanary lib
-        InputMethodManagerLeaks.fixFocusedViewLeak(this);
-
-        //Crashlytics
-        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build();
-
-        Fabric.with(this,
-                new Crashlytics.Builder()
-                        .core(crashlyticsCore)
-                        .answers(new Answers())
-                        .build());
-
-        // Firebase
-        FirebaseApp.initializeApp(this);
-        FirebaseAnalytics.getInstance(this);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         // we cannot call setDefaultValues for multiple fragment based XML preference
@@ -160,35 +115,35 @@ public class ShuttleApplication extends DaggerApplication {
                             ),
                     query);
         })
-                .doOnError(throwable -> LogUtils.logException(TAG, "Error updating user selected artwork", throwable))
+                .doOnError(throwable -> Log.e(TAG, "Error updating user selected artwork", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
         Completable.timer(5, TimeUnit.SECONDS)
                 .andThen(Completable.defer(this::repairMediaStoreYearFromTags))
-                .doOnError(throwable -> LogUtils.logException(TAG, "Failed to update year from tags", throwable))
+                .doOnError(throwable -> Log.e(TAG, "Failed to update year from tags", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
         Completable.timer(10, TimeUnit.SECONDS)
                 .andThen(Completable.defer(this::cleanGenres))
-                .doOnError(throwable -> LogUtils.logException(TAG, "Failed to clean genres", throwable))
+                .doOnError(throwable -> Log.e(TAG, "Failed to clean genres", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
         Completable.timer(15, TimeUnit.SECONDS)
                 .andThen(Completable.defer(this::cleanMostPlayedPlaylist))
-                .doOnError(throwable -> LogUtils.logException(TAG, "Failed to clean most played", throwable))
+                .doOnError(throwable -> Log.e(TAG, "Failed to clean most played", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
         Completable.timer(20, TimeUnit.SECONDS)
                 .andThen(Completable.defer(() -> LegacyUtils.deleteOldResources(this)))
-                .doOnError(throwable -> LogUtils.logException(TAG, "Failed to delete old resources", throwable))
+                .doOnError(throwable -> Log.e(TAG, "Failed to delete old resources", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
@@ -197,10 +152,6 @@ public class ShuttleApplication extends DaggerApplication {
     @Override
     protected AndroidInjector<? extends dagger.android.DaggerApplication> applicationInjector() {
         return DaggerAppComponent.builder().create(this);
-    }
-
-    public RefWatcher getRefWatcher() {
-        return this.refWatcher;
     }
 
     @Override
@@ -219,13 +170,8 @@ public class ShuttleApplication extends DaggerApplication {
         return "unknown";
     }
 
-    public void setIsUpgraded(boolean isUpgraded) {
-        this.isUpgraded = isUpgraded;
-        analyticsManager.setIsUpgraded(isUpgraded);
-    }
-
     public boolean getIsUpgraded() {
-        return isUpgraded || BuildConfig.DEBUG;
+        return true;
     }
 
     public File getDiskCacheDir(String uniqueName) {
@@ -359,7 +305,7 @@ public class ShuttleApplication extends DaggerApplication {
                                             }
                                         }
                                     } catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException | OutOfMemoryError e) {
-                                        LogUtils.logException(TAG, "Failed to repair media store year", e);
+                                        Log.e(TAG, "Failed to repair media store year", e);
                                     }
                                 }
                             }

@@ -6,6 +6,7 @@ import com.simplecity.amp_library.model.Genre
 import com.simplecity.amp_library.sql.sqlbrite.SqlBriteUtils
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,7 +20,10 @@ class GenresRepository @Inject constructor(private val application: ShuttleAppli
     override fun getGenres(): Observable<List<Genre>> {
         if (genresSubscription == null || genresSubscription?.isDisposed == true) {
             genresSubscription = SqlBriteUtils.createObservableList<Genre>(application, { Genre(it) }, Genre.getQuery())
-                .subscribe(genresRelay)
+                .subscribe(
+                    genresRelay,
+                    Consumer { error ->  }
+                )
         }
 
         return genresRelay.subscribeOn(Schedulers.io())

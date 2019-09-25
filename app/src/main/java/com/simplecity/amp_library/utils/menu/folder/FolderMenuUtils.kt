@@ -40,6 +40,8 @@ object FolderMenuUtils {
 
         fun showToast(@StringRes messageResId: Int)
 
+        fun onSongsAddedToQueue(numSongs: Int)
+
         fun onPlaybackFailed()
 
         fun shareSong(song: Song)
@@ -49,8 +51,6 @@ object FolderMenuUtils {
         fun showSongInfo(song: Song)
 
         fun onPlaylistItemsInserted()
-
-        fun onQueueItemsInserted(numSongs: Int)
 
         fun showTagEditor(song: Song)
 
@@ -235,7 +235,7 @@ object FolderMenuUtils {
                     return@OnMenuItemClickListener true
                 }
                 R.id.addToQueue -> {
-                    MenuUtils.addToQueue(mediaManager, getSongsForFolderObject(songsRepository, folderObject)) { callbacks.onQueueItemsInserted(it) }
+                    MenuUtils.addToQueue(mediaManager, getSongsForFolderObject(songsRepository, folderObject)) { callbacks.onSongsAddedToQueue(it) }
                     return@OnMenuItemClickListener true
                 }
                 R.id.scan -> {
@@ -276,7 +276,9 @@ object FolderMenuUtils {
 
             when (menuItem.itemId) {
                 R.id.playNext -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ song -> mediaManager.playNext(listOf(song)) { callbacks.showToast(it) } }, { })
+                    getSongForFile(songsRepository, fileObject)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { song -> mediaManager.playNext(listOf(song)) { callbacks.onSongsAddedToQueue(it) } }
                     return@OnMenuItemClickListener true
                 }
                 Defs.NEW_PLAYLIST -> {
@@ -298,7 +300,7 @@ object FolderMenuUtils {
                     return@OnMenuItemClickListener true
                 }
                 R.id.addToQueue -> {
-                    getSongForFile(songsRepository, fileObject).subscribe({ song -> MenuUtils.addToQueue(mediaManager, listOf(song), { callbacks.onQueueItemsInserted(it) }) }, { })
+                    getSongForFile(songsRepository, fileObject).subscribe { song -> MenuUtils.addToQueue(mediaManager, listOf(song)) { callbacks.onSongsAddedToQueue(it) } }
                     return@OnMenuItemClickListener true
                 }
                 R.id.scan -> {

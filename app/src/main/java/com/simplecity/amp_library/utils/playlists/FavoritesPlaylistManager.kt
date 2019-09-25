@@ -11,6 +11,7 @@ import com.simplecity.amp_library.model.Playlist
 import com.simplecity.amp_library.model.Playlist.Type
 import com.simplecity.amp_library.model.Song
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,10 +32,11 @@ class FavoritesPlaylistManager @Inject constructor(
     fun getFavoritesPlaylist(): Single<Playlist?> {
         return playlistsRepository.getPlaylists()
             .first(Collections.emptyList())
-            .flatMapObservable { Observable.fromIterable(it) }
+            .flatMapObservable { playlists -> Observable.fromIterable(playlists) }
             .filter { playlist -> playlist.type == Type.FAVORITES }
-            .switchIfEmpty(Observable.fromCallable { createFavoritePlaylist() })
+            .switchIfEmpty(Maybe.fromCallable { createFavoritePlaylist() }.toObservable())
             .firstOrError()
+            .doOnError { throwable -> }
     }
 
     fun isFavorite(song: Song?): Observable<Boolean> {
@@ -97,7 +99,6 @@ class FavoritesPlaylistManager @Inject constructor(
     fun addToFavorites(song: Song, success: (Boolean) -> Unit): Disposable {
         return Single.zip<Playlist, Int, Pair<Playlist, Int>>(
             getFavoritesPlaylist(),
-
             getFavoritesPlaylist().flatMapObservable<List<Song>> { songsRepository.getSongs(it) }
                 .first(emptyList())
                 .map { it.size },
@@ -114,8 +115,9 @@ class FavoritesPlaylistManager @Inject constructor(
             .delay(150, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ success.invoke(it) },
-                { }
+            .subscribe(
+                { success.invoke(it) },
+                { throwable -> }
             )
     }
 

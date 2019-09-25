@@ -6,6 +6,7 @@ import com.simplecity.amp_library.model.Album
 import com.simplecity.amp_library.utils.Operators
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +21,10 @@ class AlbumsRepository @Inject constructor(private val songsRepository: Reposito
         if (albumsSubscription == null || albumsSubscription?.isDisposed == true) {
             albumsSubscription = songsRepository.getSongs()
                 .flatMap { songs -> Observable.just(Operators.songsToAlbums(songs)) }
-                .subscribe(albumsRelay)
+                .subscribe(
+                    albumsRelay,
+                    Consumer { error -> }
+                )
         }
         return albumsRelay.subscribeOn(Schedulers.io())
     }

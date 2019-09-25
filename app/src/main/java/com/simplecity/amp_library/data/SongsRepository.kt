@@ -22,6 +22,7 @@ import com.simplecity.amp_library.utils.playlists.PlaylistManager
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import java.util.ArrayList
@@ -46,7 +47,10 @@ open class SongsRepository @Inject constructor(
     override fun getAllSongs(): Observable<List<Song>> {
         if (allSongsSubscription == null || allSongsSubscription?.isDisposed == true) {
             allSongsSubscription = SqlBriteUtils.createObservableList<Song>(context, { Song(it) }, Song.getQuery())
-                .subscribe(allSongsRelay)
+                .subscribe(
+                    allSongsRelay,
+                    Consumer { error -> }
+                )
         }
 
         return allSongsRelay

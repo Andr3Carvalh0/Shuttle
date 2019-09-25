@@ -32,6 +32,8 @@ public abstract class BaseActivity extends AestheticActivity implements
         HasSupportFragmentInjector,
         ServiceConnection {
 
+    private Boolean bindInFlight = false;
+
     @Nullable
     private MusicServiceConnectionUtils.ServiceToken token;
 
@@ -98,7 +100,17 @@ public abstract class BaseActivity extends AestheticActivity implements
     }
 
     void bindService() {
-        MusicServiceConnectionUtils.bindToService(getLifecycle(), this, this, serviceToken -> token = serviceToken);
+        if (!bindInFlight) {
+            bindInFlight = true;
+            MusicServiceConnectionUtils.bindToService(
+                    getLifecycle(),
+                    this,
+                    this, serviceToken -> {
+                        token = serviceToken;
+                        this.bindInFlight = false;
+                    }
+            );
+        }
     }
 
     void unbindService() {

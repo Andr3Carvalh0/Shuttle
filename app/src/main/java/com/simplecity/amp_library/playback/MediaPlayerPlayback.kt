@@ -14,6 +14,7 @@ import android.util.Log
 import com.simplecity.amp_library.model.Song
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import java.io.File
 
 internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
@@ -112,7 +113,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
                     val uri = Uri.parse(path)
                     mediaPlayer.setDataSource(context, uri)
                 } else {
-                    mediaPlayer.setDataSource(path)
+                    mediaPlayer.setDataSource(Uri.fromFile(File(path)).toString())
                 }
 
                 mediaPlayer.setAudioAttributes(
@@ -336,7 +337,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
             fadeAnimator?.cancel()
 
             fadeAnimator = ValueAnimator.ofFloat(currentVolume, 0f)
-            fadeAnimator!!.duration = 350
+            fadeAnimator!!.duration = 150
             fadeAnimator!!.interpolator = FadeInterpolator(1)
             fadeAnimator!!.addUpdateListener { animation -> setVolume(animation.animatedValue as Float) }
             fadeAnimator!!.addListener(object : AnimatorListenerAdapter() {

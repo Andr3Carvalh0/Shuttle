@@ -6,6 +6,7 @@ import com.simplecity.amp_library.di.app.activity.ActivityScope;
 import com.simplecity.amp_library.di.app.activity.fragment.DialogFragmentModule;
 import com.simplecity.amp_library.di.app.activity.fragment.FragmentModule;
 import com.simplecity.amp_library.di.app.activity.fragment.FragmentScope;
+import com.simplecity.amp_library.saf.SafManager;
 import com.simplecity.amp_library.ui.common.EqualizerModule;
 import com.simplecity.amp_library.ui.dialog.ChangelogDialog;
 import com.simplecity.amp_library.ui.dialog.DeleteDialog;
@@ -195,4 +196,8 @@ public abstract class MainActivityModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = DialogFragmentModule.class)
     abstract LyricsDialog lyricsDialogInjector();
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = DialogFragmentModule.class)
+    abstract SafManager.SafDialog safDialogInjector();
 }

@@ -78,7 +78,6 @@ public class ShuttleApplication extends DaggerApplication {
                 .create(this)
                 .inject(this);
 
-
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         // we cannot call setDefaultValues for multiple fragment based XML preference
         // files with readAgain flag set to false, so always check KEY_HAS_SET_DEFAULT_VALUES

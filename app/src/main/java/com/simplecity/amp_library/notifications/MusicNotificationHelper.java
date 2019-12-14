@@ -49,6 +49,8 @@ public class MusicNotificationHelper extends NotificationHelper {
 
     private Handler handler;
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     public MusicNotificationHelper(Context context) {
         super(context);
 

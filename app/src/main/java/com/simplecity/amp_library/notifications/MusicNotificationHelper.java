@@ -31,6 +31,7 @@ import com.simplecity.amp_library.utils.PlaceholderProvider;
 import com.simplecity.amp_library.utils.SettingsManager;
 import com.simplecity.amp_library.utils.playlists.FavoritesPlaylistManager;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ConcurrentModificationException;
 
@@ -114,7 +115,7 @@ public class MusicNotificationHelper extends NotificationHelper {
         notification = getBuilder(context, song, mediaSessionToken, bitmap, isPlaying, isFavorite).build();
         notify(NOTIFICATION_ID, notification);
 
-        favoritesPlaylistManager.isFavorite(song)
+        compositeDisposable.add(favoritesPlaylistManager.isFavorite(song)
                 .first(false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,7 +123,7 @@ public class MusicNotificationHelper extends NotificationHelper {
                     this.isFavorite = isFavorite;
                     notification = getBuilder(context, song, mediaSessionToken, MusicNotificationHelper.this.bitmap, isPlaying, isFavorite).build();
                     notify(notification);
-                }, error -> { });
+                }, error -> { }));
 
         handler.post(() -> Glide.with(context)
                 .load(song)
@@ -180,5 +181,9 @@ public class MusicNotificationHelper extends NotificationHelper {
 
     public void cancel() {
         super.cancel(NOTIFICATION_ID);
+    }
+
+    public void tearDown() {
+        compositeDisposable.clear();
     }
 }
